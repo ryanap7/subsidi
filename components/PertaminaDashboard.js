@@ -239,8 +239,218 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
             </TabsTrigger>
           </TabsList>
 
-          {/* Overview Tab */}
+          {/* Overview Tab - Enhanced Statistics */}
           <TabsContent value="overview" className="space-y-6">
+            {/* Key Performance Indicators */}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              <motion.div whileHover={{ scale: 1.05 }} className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-2xl shadow-lg border border-blue-200">
+                <div className="flex items-center justify-between mb-3">
+                  <Building2 className="w-8 h-8 text-blue-600" />
+                  <Badge className="bg-blue-500 text-white">Live</Badge>
+                </div>
+                <h3 className="text-3xl font-bold text-gray-900">{enhancedStats.totalSPBE}</h3>
+                <p className="text-sm text-gray-600">Total SPBE</p>
+                <div className="mt-2 flex items-center text-xs text-green-600">
+                  <CheckCircle2 className="w-3 h-3 mr-1" />
+                  {enhancedStats.activeSPBE} Active
+                </div>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.05 }} className="bg-gradient-to-br from-green-50 to-emerald-100 p-6 rounded-2xl shadow-lg border border-green-200">
+                <div className="flex items-center justify-between mb-3">
+                  <Fuel className="w-8 h-8 text-green-600" />
+                  <Badge className="bg-green-500 text-white">{enhancedStats.averageUtilization}%</Badge>
+                </div>
+                <h3 className="text-3xl font-bold text-gray-900">{(enhancedStats.totalStock / 1000000).toFixed(1)}M</h3>
+                <p className="text-sm text-gray-600">Total Stok (L)</p>
+                <div className="mt-2 flex items-center text-xs text-blue-600">
+                  <TrendingUp className="w-3 h-3 mr-1" />
+                  {enhancedStats.averageUtilization}% Utilized
+                </div>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.05 }} className="bg-gradient-to-br from-purple-50 to-pink-100 p-6 rounded-2xl shadow-lg border border-purple-200">
+                <div className="flex items-center justify-between mb-3">
+                  <Package className="w-8 h-8 text-purple-600" />
+                  <Badge className="bg-purple-500 text-white">Today</Badge>
+                </div>
+                <h3 className="text-3xl font-bold text-gray-900">{(enhancedStats.dailySales / 1000).toFixed(0)}K</h3>
+                <p className="text-sm text-gray-600">Penjualan Harian (L)</p>
+                <div className="mt-2 flex items-center text-xs text-green-600">
+                  <TrendingUp className="w-3 h-3 mr-1" />
+                  +12% vs yesterday
+                </div>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.05 }} className="bg-gradient-to-br from-yellow-50 to-orange-100 p-6 rounded-2xl shadow-lg border border-yellow-200">
+                <div className="flex items-center justify-between mb-3">
+                  <Truck className="w-8 h-8 text-orange-600" />
+                  <Badge className="bg-orange-500 text-white">Active</Badge>
+                </div>
+                <h3 className="text-3xl font-bold text-gray-900">{enhancedStats.activeVehicles}</h3>
+                <p className="text-sm text-gray-600">Kendaraan Aktif</p>
+                <div className="mt-2 flex items-center text-xs text-blue-600">
+                  <Activity className="w-3 h-3 mr-1" />
+                  {enhancedStats.deliveriesCompleted} deliveries
+                </div>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.05 }} className="bg-gradient-to-br from-teal-50 to-cyan-100 p-6 rounded-2xl shadow-lg border border-teal-200">
+                <div className="flex items-center justify-between mb-3">
+                  <BarChart3 className="w-8 h-8 text-teal-600" />
+                  <Badge className="bg-teal-500 text-white">{enhancedStats.efficiency}%</Badge>
+                </div>
+                <h3 className="text-3xl font-bold text-gray-900">Rp {(enhancedStats.monthlyRevenue / 1000000000).toFixed(1)}B</h3>
+                <p className="text-sm text-gray-600">Pendapatan Bulan Ini</p>
+                <div className="mt-2 flex items-center text-xs text-green-600">
+                  <TrendingUp className="w-3 h-3 mr-1" />
+                  Efficiency {enhancedStats.efficiency}%
+                </div>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.05 }} className="bg-gradient-to-br from-red-50 to-rose-100 p-6 rounded-2xl shadow-lg border border-red-200">
+                <div className="flex items-center justify-between mb-3">
+                  <AlertTriangle className="w-8 h-8 text-red-600" />
+                  <Badge className="bg-red-500 text-white">Alert</Badge>
+                </div>
+                <h3 className="text-3xl font-bold text-gray-900">{enhancedStats.criticalSPBE}</h3>
+                <p className="text-sm text-gray-600">SPBE Kritis</p>
+                <div className="mt-2 flex items-center text-xs text-yellow-600">
+                  <Clock className="w-3 h-3 mr-1" />
+                  Needs attention
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Detailed Analytics */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Performance Metrics */}
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-gray-900 flex items-center">
+                    <Gauge className="w-5 h-5 mr-2" />
+                    Performance Metrics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-700">Operational Efficiency</span>
+                        <span className="text-sm font-bold text-green-600">{enhancedStats.efficiency}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div 
+                          className="h-3 rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500"
+                          style={{ width: `${enhancedStats.efficiency}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-700">Fuel Quality</span>
+                        <span className="text-sm font-bold text-blue-600">{enhancedStats.fuelQuality}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div 
+                          className="h-3 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 transition-all duration-500"
+                          style={{ width: `${enhancedStats.fuelQuality}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-700">Customer Satisfaction</span>
+                        <span className="text-sm font-bold text-purple-600">{enhancedStats.customerSatisfaction}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div 
+                          className="h-3 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 transition-all duration-500"
+                          style={{ width: `${enhancedStats.customerSatisfaction}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Operations Summary */}
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-gray-900 flex items-center">
+                    <Activity className="w-5 h-5 mr-2" />
+                    Operations Summary
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center p-4 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50">
+                      <h4 className="text-2xl font-bold text-blue-600">{enhancedStats.deliveriesCompleted}</h4>
+                      <p className="text-xs text-gray-600">Deliveries Completed</p>
+                    </div>
+                    <div className="text-center p-4 rounded-lg bg-gradient-to-r from-yellow-50 to-orange-50">
+                      <h4 className="text-2xl font-bold text-orange-600">{enhancedStats.pendingDeliveries}</h4>
+                      <p className="text-xs text-gray-600">Pending Deliveries</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Top Performing SPBE</span>
+                      <span className="text-sm font-medium text-green-600">{enhancedStats.topPerformingSPBE}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Maintenance Required</span>
+                      <span className="text-sm font-medium text-yellow-600">{enhancedStats.maintenanceSPBE} SPBE</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Average Utilization</span>
+                      <span className="text-sm font-medium text-blue-600">{enhancedStats.averageUtilization}%</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* SPBE Status Distribution */}
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-gray-900 flex items-center">
+                    <Building2 className="w-5 h-5 mr-2" />
+                    SPBE Status Distribution
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-green-50 border border-green-200">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                        <span className="text-sm font-medium text-gray-700">Normal Operation</span>
+                      </div>
+                      <span className="text-lg font-bold text-green-600">118</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-yellow-50 border border-yellow-200">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
+                        <span className="text-sm font-medium text-gray-700">Low Stock</span>
+                      </div>
+                      <span className="text-lg font-bold text-yellow-600">4</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-red-50 border border-red-200">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-4 h-4 rounded-full bg-red-500"></div>
+                        <span className="text-sm font-medium text-gray-700">Critical</span>
+                      </div>
+                      <span className="text-lg font-bold text-red-600">{enhancedStats.criticalSPBE}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
