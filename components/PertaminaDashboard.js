@@ -117,8 +117,8 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
   };
 
   const getTotalStats = () => {
-    const totalCapacity = mockSPBEData.reduce((sum, spbe) => sum + spbe.capacity, 0);
-    const totalStock = mockSPBEData.reduce((sum, spbe) => sum + spbe.stock, 0);
+    const totalCapacity = enhancedSPBEData.reduce((sum, spbe) => sum + spbe.capacity, 0);
+    const totalStock = enhancedSPBEData.reduce((sum, spbe) => sum + spbe.stock, 0);
     const utilizationRate = (totalStock / totalCapacity) * 100;
     const activeVehicles = mockVehicles.filter(v => v.status === 'active').length;
     
