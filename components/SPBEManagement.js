@@ -244,12 +244,36 @@ export default function SPBEManagement({ onViewDetail }) {
                 </div>
                 
                 <div className="space-y-2">
+                  <Label htmlFor="companyName" className="text-gray-700 font-medium">Nama Perusahaan</Label>
+                  <Input
+                    id="companyName"
+                    placeholder="PT Elpiji Nusantara"
+                    value={formData.companyName}
+                    onChange={(e) => setFormData({...formData, companyName: e.target.value})}
+                    className="bg-gradient-to-r from-gray-50 to-blue-50 border-gray-200"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
                   <Label htmlFor="location" className="text-gray-700 font-medium">Kota</Label>
                   <Input
                     id="location"
                     placeholder="Jakarta"
                     value={formData.location}
                     onChange={(e) => setFormData({...formData, location: e.target.value})}
+                    className="bg-gradient-to-r from-gray-50 to-blue-50 border-gray-200"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="businessLicense" className="text-gray-700 font-medium">Nomor Izin Usaha (NIB)</Label>
+                  <Input
+                    id="businessLicense"
+                    placeholder="NIB-1234567890123456"
+                    value={formData.businessLicense}
+                    onChange={(e) => setFormData({...formData, businessLicense: e.target.value})}
                     className="bg-gradient-to-r from-gray-50 to-blue-50 border-gray-200"
                   />
                 </div>
@@ -264,6 +288,18 @@ export default function SPBEManagement({ onViewDetail }) {
                   onChange={(e) => setFormData({...formData, address: e.target.value})}
                   className="bg-gradient-to-r from-gray-50 to-blue-50 border-gray-200"
                   rows={3}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="permits" className="text-gray-700 font-medium">Perizinan</Label>
+                <Textarea
+                  id="permits"
+                  placeholder="SIUP/123/DKI/2024, TDP/456/DKI/2024"
+                  value={formData.permits}
+                  onChange={(e) => setFormData({...formData, permits: e.target.value})}
+                  className="bg-gradient-to-r from-gray-50 to-blue-50 border-gray-200"
+                  rows={2}
                 />
               </div>
 
@@ -300,6 +336,30 @@ export default function SPBEManagement({ onViewDetail }) {
                     placeholder="021-12345678"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    className="bg-gradient-to-r from-gray-50 to-blue-50 border-gray-200"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="cooperationStart" className="text-gray-700 font-medium">Mulai Kerjasama</Label>
+                  <Input
+                    id="cooperationStart"
+                    type="date"
+                    value={formData.cooperationStart}
+                    onChange={(e) => setFormData({...formData, cooperationStart: e.target.value})}
+                    className="bg-gradient-to-r from-gray-50 to-blue-50 border-gray-200"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="cooperationEnd" className="text-gray-700 font-medium">Berakhir Kerjasama</Label>
+                  <Input
+                    id="cooperationEnd"
+                    type="date"
+                    value={formData.cooperationEnd}
+                    onChange={(e) => setFormData({...formData, cooperationEnd: e.target.value})}
                     className="bg-gradient-to-r from-gray-50 to-blue-50 border-gray-200"
                   />
                 </div>
