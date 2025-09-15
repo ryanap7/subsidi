@@ -191,7 +191,7 @@ export default function LogisticsTrackingMap() {
 
           {/* Map */}
           <div className="mb-4 rounded-lg overflow-hidden border border-gray-200">
-            <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
+            {isLoaded ? (
               <GoogleMap
                 mapContainerStyle={mapContainerStyle}
                 center={selectedDelivery.currentLocation}
