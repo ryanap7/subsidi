@@ -268,35 +268,69 @@ export default function SPBEDetail({ spbe, onBack }) {
           <TabsContent value="transactions" className="space-y-6">
             <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="text-gray-900">Riwayat Transaksi</CardTitle>
-                <CardDescription>Data transaksi penjualan LPG</CardDescription>
+                <CardTitle className="text-gray-900">Transaksi dengan Agen</CardTitle>
+                <CardDescription>Data transaksi penjualan LPG ke berbagai agen</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {mockTransactions.map((transaction) => (
-                    <div key={transaction.id} className="p-4 rounded-xl bg-gradient-to-r from-gray-50 to-green-50 border border-gray-200">
-                      <div className="flex justify-between items-start">
+                <div className="space-y-6">
+                  {mockAgentTransactions.map((transaction) => (
+                    <div key={transaction.id} className="p-6 rounded-xl bg-gradient-to-r from-gray-50 to-green-50 border border-gray-200 shadow-sm">
+                      <div className="flex justify-between items-start mb-4">
                         <div className="flex-1">
                           <div className="flex items-center space-x-3 mb-2">
-                            <DollarSign className="w-4 h-4 text-green-500" />
-                            <span className="font-medium text-gray-900">{transaction.customer}</span>
+                            <DollarSign className="w-5 h-5 text-green-500" />
+                            <h4 className="font-bold text-lg text-gray-900">{transaction.agent.name}</h4>
+                            <Badge variant="outline" className="text-xs">
+                              {transaction.agent.code}
+                            </Badge>
                           </div>
-                          <div className="flex items-center space-x-4 text-sm text-gray-600">
-                            <span className="flex items-center">
+                          <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-3">
+                            <div className="flex items-center">
+                              <MapPin className="w-3 h-3 mr-1" />
+                              <span>{transaction.agent.address}</span>
+                            </div>
+                            <div className="flex items-center">
+                              <Users className="w-3 h-3 mr-1" />
+                              <span>PIC: {transaction.agent.pic}</span>
+                            </div>
+                            <div className="flex items-center">
                               <Calendar className="w-3 h-3 mr-1" />
-                              {new Date(transaction.date).toLocaleDateString('id-ID')}
-                            </span>
-                            <span className="flex items-center">
+                              <span>{new Date(transaction.date).toLocaleDateString('id-ID')}</span>
+                            </div>
+                            <div className="flex items-center">
                               <Package className="w-3 h-3 mr-1" />
-                              {transaction.volume.toLocaleString()} L
-                            </span>
+                              <span>{transaction.volume.toLocaleString()} L</span>
+                            </div>
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="font-bold text-lg text-green-600">
+                          <div className="font-bold text-2xl text-green-600 mb-1">
                             Rp {transaction.amount.toLocaleString()}
                           </div>
-                          <div className="text-xs text-gray-500">{transaction.type}</div>
+                          <div className="text-xs text-gray-500 mb-2">{transaction.invoiceNumber}</div>
+                          <div className="flex flex-col space-y-1">
+                            <Badge variant={transaction.paymentStatus === 'Lunas' ? 'default' : 'secondary'} className="text-xs">
+                              {transaction.paymentStatus}
+                            </Badge>
+                            <Badge variant={transaction.deliveryStatus === 'Selesai' ? 'default' : 'secondary'} className="text-xs">
+                              {transaction.deliveryStatus}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-3 gap-4 p-4 bg-white/60 rounded-lg">
+                        <div className="text-center">
+                          <p className="text-xs text-gray-500 mb-1">Metode Pembayaran</p>
+                          <p className="font-semibold text-gray-900">{transaction.paymentMethod}</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-xs text-gray-500 mb-1">Kontak</p>
+                          <p className="font-semibold text-gray-900">{transaction.agent.phone}</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-xs text-gray-500 mb-1">Harga per Liter</p>
+                          <p className="font-semibold text-gray-900">Rp {(transaction.amount / transaction.volume).toLocaleString()}</p>
                         </div>
                       </div>
                     </div>
