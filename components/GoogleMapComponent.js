@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useRef, useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, Marker, InfoWindow, Polyline } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, InfoWindow, Polyline, useJsApiLoader, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Building2, Truck, Navigation, Fuel, MapPin, Activity } from 'lucide-react';
@@ -84,16 +84,19 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], view 
   const mapRef = useRef();
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [directions, setDirections] = useState(null);
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    libraries: ['geometry', 'drawing', 'places'],
+  });
 
   const onLoad = useCallback((map) => {
     mapRef.current = map;
-    setIsLoaded(true);
   }, []);
 
   const onUnmount = useCallback(() => {
     mapRef.current = undefined;
-    setIsLoaded(false);
   }, []);
 
   const handleMarkerClick = useCallback((item, type) => {
@@ -104,7 +107,7 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], view 
   // Fit map bounds to show all markers
   useEffect(() => {
     if (mapRef.current && isLoaded && (spbeData.length > 0 || vehicles.length > 0)) {
-      const bounds = new google.maps.LatLngBounds();
+      const bounds = new window.google.maps.LatLngBounds();
       
       spbeData.forEach(spbe => {
         bounds.extend({ lat: spbe.lat, lng: spbe.lng });
@@ -121,6 +124,35 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], view 
       }
     }
   }, [spbeData, vehicles, isLoaded]);
+
+  useEffect(() => {
+    if (isLoaded && mockRoutes.length > 0) {
+      Promise.all(
+        mockRoutes.map(route =>
+          new Promise((resolve) => {
+            const service = new google.maps.DirectionsService();
+            service.route(
+              {
+                origin: route.path[0],
+                destination: route.path[route.path.length - 1],
+                travelMode: google.maps.TravelMode.DRIVING,
+              },
+              (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                  resolve({ id: route.id, color: route.color, result });
+                } else {
+                  resolve(null);
+                }
+              }
+            );
+          })
+        )
+      ).then(results => {
+        setDirections(results.filter(Boolean));
+      });
+    }
+  }, [isLoaded, mockRoutes]);
+
 
   const getSPBEMarkerColor = (status) => {
     switch (status) {
@@ -150,173 +182,177 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], view 
     );
   }
 
+  if (!isLoaded) {
+    return <div className="w-full h-full flex items-center justify-center">Loading map…</div>;
+  }
+
+  console.log(directions)
+
   return (
     <div className="w-full h-full relative">
-      <LoadScript
-        googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-        libraries={['geometry', 'drawing', 'places']}
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        center={defaultCenter}
+        zoom={6}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+        options={mapOptions}
       >
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={defaultCenter}
-          zoom={6}
-          onLoad={onLoad}
-          onUnmount={onUnmount}
-          options={mapOptions}
-        >
-          {/* SPBE Markers */}
-          {spbeData.map(spbe => (
+        {/* SPBE Markers */}
+        {spbeData.map(spbe => (
+          <Marker
+            key={spbe.id}
+            position={{ lat: spbe.lat, lng: spbe.lng }}
+            icon={{
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 8,
+              fillColor: getSPBEMarkerColor(spbe.status),
+              fillOpacity: 1,
+              strokeColor: '#ffffff',
+              strokeWeight: 2,
+            }}
+            onClick={() => handleMarkerClick(spbe, 'spbe')}
+          />
+        ))}
+
+        {/* Vehicle Markers */}
+        {vehicles.map(vehicle => (
+          vehicle.position && (
             <Marker
-              key={spbe.id}
-              position={{ lat: spbe.lat, lng: spbe.lng }}
+              key={vehicle.id}
+              position={vehicle.position}
               icon={{
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 8,
-                fillColor: getSPBEMarkerColor(spbe.status),
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                scale: 6,
+                fillColor: getVehicleMarkerColor(vehicle.status),
                 fillOpacity: 1,
                 strokeColor: '#ffffff',
                 strokeWeight: 2,
+                rotation: 0,
               }}
-              onClick={() => handleMarkerClick(spbe, 'spbe')}
+              onClick={() => handleMarkerClick(vehicle, 'vehicle')}
             />
-          ))}
+          )
+        ))}
 
-          {/* Vehicle Markers */}
-          {vehicles.map(vehicle => (
-            vehicle.position && (
-              <Marker
-                key={vehicle.id}
-                position={vehicle.position}
-                icon={{
-                  path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                  scale: 6,
-                  fillColor: getVehicleMarkerColor(vehicle.status),
-                  fillOpacity: 1,
-                  strokeColor: '#ffffff',
-                  strokeWeight: 2,
-                  rotation: 0,
-                }}
-                onClick={() => handleMarkerClick(vehicle, 'vehicle')}
-              />
-            )
-          ))}
-
-          {/* Route Polylines */}
-          {view === 'supply-chain' && mockRoutes.map(route => (
-            <Polyline
-              key={route.id}
-              path={route.path}
-              options={{
-                strokeColor: route.color,
+        {/* Route Polylines */}
+        {view === 'supply-chain' && directions.map(d => (
+          <DirectionsRenderer
+            key={d.id}
+            directions={d.result}
+            options={{
+              suppressMarkers: true,
+              polylineOptions: {
+                strokeColor: d.color,
                 strokeOpacity: 0.8,
                 strokeWeight: 4,
-              }}
-            />
-          ))}
+              },
+            }}
+          />
+        ))}
 
-          {/* Info Window */}
-          {selectedMarker && (
-            <InfoWindow
-              position={selectedType === 'spbe' ? 
-                { lat: selectedMarker.lat, lng: selectedMarker.lng } : 
-                selectedMarker.position
-              }
-              onCloseClick={() => {
-                setSelectedMarker(null);
-                setSelectedType(null);
-              }}
-            >
-              <div className="p-3 min-w-[250px]">
-                {selectedType === 'spbe' ? (
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Building2 className="w-5 h-5 text-blue-600" />
+        {/* Info Window */}
+        {selectedMarker && (
+          <InfoWindow
+            position={selectedType === 'spbe' ? 
+              { lat: selectedMarker.lat, lng: selectedMarker.lng } : 
+              selectedMarker.position
+            }
+            onCloseClick={() => {
+              setSelectedMarker(null);
+              setSelectedType(null);
+            }}
+          >
+            <div className="p-3 min-w-[250px]">
+              {selectedType === 'spbe' ? (
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Building2 className="w-5 h-5 text-blue-600" />
+                    <div>
+                      <h3 className="font-semibold text-gray-800">{selectedMarker.name}</h3>
+                      <p className="text-sm text-gray-600">{selectedMarker.location}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Status:</span>
+                      <Badge variant={
+                        selectedMarker.status === 'critical' ? 'destructive' :
+                        selectedMarker.status === 'low' ? 'secondary' : 'default'
+                      }>
+                        {selectedMarker.status}
+                      </Badge>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
-                        <h3 className="font-semibold text-gray-800">{selectedMarker.name}</h3>
-                        <p className="text-sm text-gray-600">{selectedMarker.location}</p>
+                        <p className="text-gray-600">Stok Saat Ini</p>
+                        <p className="font-medium">{selectedMarker.stock?.toLocaleString()} L</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Kapasitas</p>
+                        <p className="font-medium">{selectedMarker.capacity?.toLocaleString()} L</p>
                       </div>
                     </div>
                     
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Status:</span>
-                        <Badge variant={
-                          selectedMarker.status === 'critical' ? 'destructive' :
-                          selectedMarker.status === 'low' ? 'secondary' : 'default'
-                        }>
-                          {selectedMarker.status}
-                        </Badge>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div>
-                          <p className="text-gray-600">Stok Saat Ini</p>
-                          <p className="font-medium">{selectedMarker.stock?.toLocaleString()} L</p>
-                        </div>
-                        <div>
-                          <p className="text-gray-600">Kapasitas</p>
-                          <p className="font-medium">{selectedMarker.capacity?.toLocaleString()} L</p>
-                        </div>
-                      </div>
-                      
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-blue-600 h-2 rounded-full" 
-                          style={{ 
-                            width: `${((selectedMarker.stock || 0) / (selectedMarker.capacity || 1)) * 100}%` 
-                          }}
-                        ></div>
-                      </div>
-                      
-                      <p className="text-xs text-gray-500 text-center">
-                        Tingkat Pengisian: {(((selectedMarker.stock || 0) / (selectedMarker.capacity || 1)) * 100).toFixed(1)}%
-                      </p>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-blue-600 h-2 rounded-full" 
+                        style={{ 
+                          width: `${((selectedMarker.stock || 0) / (selectedMarker.capacity || 1)) * 100}%` 
+                        }}
+                      ></div>
+                    </div>
+                    
+                    <p className="text-xs text-gray-500 text-center">
+                      Tingkat Pengisian: {(((selectedMarker.stock || 0) / (selectedMarker.capacity || 1)) * 100).toFixed(1)}%
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Truck className="w-5 h-5 text-green-600" />
+                    <div>
+                      <h3 className="font-semibold text-gray-800">{selectedMarker.name}</h3>
+                      <p className="text-sm text-gray-600">ID: {selectedMarker.id}</p>
                     </div>
                   </div>
-                ) : (
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Truck className="w-5 h-5 text-green-600" />
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Status:</span>
+                      <Badge variant={
+                        selectedMarker.status === 'active' ? 'default' :
+                        selectedMarker.status === 'maintenance' ? 'secondary' : 'outline'
+                      }>
+                        {selectedMarker.status}
+                      </Badge>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 gap-2 text-sm">
                       <div>
-                        <h3 className="font-semibold text-gray-800">{selectedMarker.name}</h3>
-                        <p className="text-sm text-gray-600">ID: {selectedMarker.id}</p>
+                        <p className="text-gray-600">Tujuan</p>
+                        <p className="font-medium">{selectedMarker.destination}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Muatan</p>
+                        <p className="font-medium">{selectedMarker.cargo?.toLocaleString()} L</p>
                       </div>
                     </div>
                     
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Status:</span>
-                        <Badge variant={
-                          selectedMarker.status === 'active' ? 'default' :
-                          selectedMarker.status === 'maintenance' ? 'secondary' : 'outline'
-                        }>
-                          {selectedMarker.status}
-                        </Badge>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 gap-2 text-sm">
-                        <div>
-                          <p className="text-gray-600">Tujuan</p>
-                          <p className="font-medium">{selectedMarker.destination}</p>
-                        </div>
-                        <div>
-                          <p className="text-gray-600">Muatan</p>
-                          <p className="font-medium">{selectedMarker.cargo?.toLocaleString()} L</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center space-x-1 text-xs text-gray-500">
-                        <Activity className="w-3 h-3" />
-                        <span>Live tracking aktif</span>
-                      </div>
+                    <div className="flex items-center space-x-1 text-xs text-gray-500">
+                      <Activity className="w-3 h-3" />
+                      <span>Live tracking aktif</span>
                     </div>
                   </div>
-                )}
-              </div>
-            </InfoWindow>
-          )}
-        </GoogleMap>
-      </LoadScript>
+                </div>
+              )}
+            </div>
+          </InfoWindow>
+        )}
+      </GoogleMap>
       
       {/* Map Legend */}
       <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md p-3 rounded-lg shadow-lg">
