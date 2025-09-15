@@ -66,8 +66,9 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
     return { totalCapacity, totalStock, utilizationRate, activeVehicles };
   };
 
-  const handleTrackDelivery = (tracking) => {
-    setTrackingData(tracking);
+  const handleSPBECardClick = (spbe) => {
+    setSelectedSPBEForDetail(spbe);
+    setShowSPBEDetail(true);
   };
 
   const stats = getTotalStats();
