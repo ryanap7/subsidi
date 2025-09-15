@@ -161,6 +161,7 @@ export default function SPBEManagement({ onViewDetail }) {
     const newSPBE = {
       id: `SPBE-${String(spbeList.length + 1).padStart(3, '0')}`,
       name: formData.name,
+      companyName: formData.companyName,
       location: formData.location,
       address: formData.address,
       stock: Math.floor(Math.random() * parseInt(formData.capacity)), // Random initial stock
@@ -170,11 +171,30 @@ export default function SPBEManagement({ onViewDetail }) {
       lng: parseFloat(formData.lng),
       manager: formData.manager,
       phone: formData.phone,
-      established: new Date().toISOString().split('T')[0]
+      established: new Date().toISOString().split('T')[0],
+      businessLicense: formData.businessLicense,
+      permits: formData.permits,
+      cooperationStart: formData.cooperationStart,
+      cooperationEnd: formData.cooperationEnd,
+      cooperationStatus: 'active'
     };
 
     setSPBEList([...spbeList, newSPBE]);
-    setFormData({ name: '', location: '', address: '', capacity: '', manager: '', phone: '', lat: '', lng: '' });
+    setFormData({ 
+      name: '', 
+      companyName: '', 
+      location: '', 
+      address: '', 
+      capacity: '', 
+      manager: '', 
+      phone: '', 
+      lat: '', 
+      lng: '', 
+      businessLicense: '', 
+      permits: '', 
+      cooperationStart: '', 
+      cooperationEnd: '' 
+    });
     setShowCreateModal(false);
   };
 
