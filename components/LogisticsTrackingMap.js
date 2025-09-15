@@ -160,7 +160,7 @@ export default function LogisticsTrackingMap({ trackingData = null }) {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
+      <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg" data-testid="logistics-tracking-map">
         <CardHeader>
           <CardTitle className="text-gray-900 flex items-center text-xl">
             <Navigation className="w-6 h-6 mr-3" />
