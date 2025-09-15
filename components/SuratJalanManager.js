@@ -548,7 +548,7 @@ export default function SuratJalanManager({ onTrackDelivery }) {
                     </Badge>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                     {/* Driver & Vehicle */}
                     <div>
                       <h4 className="text-sm font-medium text-gray-700 mb-2">Pengemudi & Kendaraan</h4>
@@ -578,28 +578,30 @@ export default function SuratJalanManager({ onTrackDelivery }) {
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    {/* Destinations */}
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Destinasi ({sj.destinations.length})</h4>
-                      <div className="space-y-2 max-h-20 overflow-y-auto">
-                        {sj.destinations.map((dest, index) => (
-                          <div key={index} className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border border-gray-200">
-                            <div className="flex items-center flex-1">
-                              <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
-                              <span className="text-sm font-medium text-gray-900 truncate">{dest.spbe}</span>
-                            </div>
-                            <div className="flex items-center space-x-2 ml-2">
-                              <span className="text-xs font-bold text-gray-700">{dest.volume.toLocaleString()}L</span>
-                              {dest.delivered ? (
-                                <CheckCircle2 className="w-4 h-4 text-green-500" />
-                              ) : (
-                                <Clock className="w-4 h-4 text-amber-500" />
-                              )}
+                  {/* Destinations - New Row */}
+                  <div className="mb-4">
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Destinasi ({sj.destinations.length})</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {sj.destinations.map((dest, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-all duration-200">
+                          <div className="flex items-center flex-1">
+                            <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                            <div className="flex-1">
+                              <span className="text-sm font-medium text-gray-900 block truncate">{dest.spbe}</span>
+                              <span className="text-xs text-gray-600">{dest.volume.toLocaleString()}L</span>
                             </div>
                           </div>
-                        ))}
-                      </div>
+                          <div className="ml-2">
+                            {dest.delivered ? (
+                              <CheckCircle2 className="w-4 h-4 text-green-500" />
+                            ) : (
+                              <Clock className="w-4 h-4 text-amber-500" />
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
