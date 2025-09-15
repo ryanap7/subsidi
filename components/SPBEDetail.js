@@ -380,60 +380,135 @@ export default function SPBEDetail({ spbe, onBack }) {
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Company Identity Information */}
               <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-gray-900">Informasi Umum</CardTitle>
+                  <CardTitle className="text-gray-900">Identitas Perusahaan</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4">
                     <div>
                       <p className="text-sm text-gray-600">ID SPBE</p>
                       <p className="font-medium text-gray-900">{spbe.id}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Status</p>
-                      <Badge variant={spbe.status === 'critical' ? 'destructive' : spbe.status === 'low' ? 'secondary' : 'default'}>
-                        {spbe.status === 'critical' ? 'Kritis' : spbe.status === 'low' ? 'Rendah' : 'Normal'}
-                      </Badge>
+                      <p className="text-sm text-gray-600">Nama Perusahaan</p>
+                      <p className="font-medium text-gray-900">{spbe.companyName || 'PT Elpiji Nusantara'}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Alamat Lengkap</p>
+                      <p className="font-medium text-gray-900">{spbe.address}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Koordinat</p>
                       <p className="font-medium text-gray-900">{spbe.lat}, {spbe.lng}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Terakhir Update</p>
-                      <p className="font-medium text-gray-900">5 menit lalu</p>
+                      <p className="text-sm text-gray-600">Nomor Izin Usaha (NIB)</p>
+                      <p className="font-medium text-gray-900">{spbe.businessLicense || 'NIB-1234567890123456'}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Perizinan</p>
+                      <p className="font-medium text-gray-900 text-xs leading-relaxed">
+                        {spbe.permits || 'SIUP/123/DKI/2020, TDP/456/DKI/2020, Izin Lingkungan/789/DKI/2020'}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
+              {/* Cooperation Agreement */}
               <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-gray-900">Ringkasan Hari Ini</CardTitle>
+                  <CardTitle className="text-gray-900">Kerjasama dengan Pertamina</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Penjualan Hari Ini</span>
-                      <span className="font-bold text-gray-900">2,500 L</span>
+                      <span className="text-gray-600">Status Kerjasama</span>
+                      <Badge variant={
+                        spbe.cooperationStatus === 'active' ? 'default' :
+                        spbe.cooperationStatus === 'expires_soon' ? 'secondary' : 'destructive'
+                      }>
+                        {spbe.cooperationStatus === 'active' ? 'Aktif' :
+                         spbe.cooperationStatus === 'expires_soon' ? 'Akan Berakhir' : 'Berakhir'}
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Pengiriman Masuk</span>
-                      <span className="font-bold text-gray-900">5,000 L</span>
+                      <span className="text-gray-600">Mulai Kerjasama</span>
+                      <span className="font-medium text-gray-900">
+                        {spbe.cooperationStart ? new Date(spbe.cooperationStart).toLocaleDateString('id-ID') : '15 Januari 2020'}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Pendapatan</span>
-                      <span className="font-bold text-green-600">Rp 62,500,000</span>
+                      <span className="text-gray-600">Berakhir Kerjasama</span>
+                      <span className="font-medium text-gray-900">
+                        {spbe.cooperationEnd ? new Date(spbe.cooperationEnd).toLocaleDateString('id-ID') : '14 Januari 2025'}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Jumlah Transaksi</span>
-                      <span className="font-bold text-gray-900">24</span>
+                      <span className="text-gray-600">Durasi Kerjasama</span>
+                      <span className="font-medium text-gray-900">5 Tahun</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600">Perpanjangan Otomatis</span>
+                      <span className="font-medium text-green-600">Ya</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600">Manager Operasional</span>
+                      <span className="font-medium text-gray-900">{spbe.manager}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600">Kontak Operasional</span>
+                      <span className="font-medium text-gray-900">{spbe.phone}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600">Terakhir Update</span>
+                      <span className="font-medium text-gray-900">5 menit lalu</span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
+
+            {/* Daily Summary */}
+            <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-gray-900">Ringkasan Hari Ini</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  <div className="text-center p-4 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50">
+                    <div className="flex items-center justify-center mb-2">
+                      <Package className="w-6 h-6 text-blue-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900">2,500 L</p>
+                    <p className="text-sm text-gray-600">Penjualan Hari Ini</p>
+                  </div>
+                  <div className="text-center p-4 rounded-lg bg-gradient-to-r from-green-50 to-emerald-50">
+                    <div className="flex items-center justify-center mb-2">
+                      <Truck className="w-6 h-6 text-green-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900">5,000 L</p>
+                    <p className="text-sm text-gray-600">Pengiriman Masuk</p>
+                  </div>
+                  <div className="text-center p-4 rounded-lg bg-gradient-to-r from-yellow-50 to-orange-50">
+                    <div className="flex items-center justify-center mb-2">
+                      <DollarSign className="w-6 h-6 text-orange-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-green-600">Rp 62,5 Jt</p>
+                    <p className="text-sm text-gray-600">Pendapatan</p>
+                  </div>
+                  <div className="text-center p-4 rounded-lg bg-gradient-to-r from-purple-50 to-pink-50">
+                    <div className="flex items-center justify-center mb-2">
+                      <Users className="w-6 h-6 text-purple-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900">24</p>
+                    <p className="text-sm text-gray-600">Transaksi</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
