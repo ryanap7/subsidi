@@ -337,42 +337,6 @@ export default function SPBEDetail({ spbe, onBack }) {
             </Card>
           </TabsContent>
 
-          {/* Statistics Tab */}
-          <TabsContent value="statistics" className="space-y-6">
-            <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-gray-900">Statistik Bulanan</CardTitle>
-                <CardDescription>Tren volume dan pendapatan per bulan</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {mockMonthlyStats.map((stat, index) => (
-                    <div key={index} className="p-4 rounded-xl bg-gradient-to-r from-gray-50 to-purple-50 border border-gray-200">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <h4 className="font-medium text-gray-900 mb-1">{stat.month}</h4>
-                          <div className="flex items-center space-x-4 text-sm text-gray-600">
-                            <span>{stat.volume.toLocaleString()} L</span>
-                            <span>Rp {stat.revenue.toLocaleString()}</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          {stat.growth > 0 ? (
-                            <TrendingUp className="w-4 h-4 text-green-500" />
-                          ) : (
-                            <TrendingDown className="w-4 h-4 text-red-500" />
-                          )}
-                          <span className={`font-medium ${stat.growth > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {stat.growth > 0 ? '+' : ''}{stat.growth}%
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
