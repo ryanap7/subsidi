@@ -42,13 +42,50 @@ const enhancedStats = {
   customerSatisfaction: 96.5
 };
 
-// Mock data untuk dashboard
-const mockSPBEData = [
-  { id: 'SPBE-001', name: 'SPBE Jakarta Selatan', location: 'Jakarta', stock: 15000, capacity: 20000, status: 'normal', lat: -6.2615, lng: 106.7815 },
-  { id: 'SPBE-002', name: 'SPBE Surabaya Timur', location: 'Surabaya', stock: 8500, capacity: 15000, status: 'low', lat: -7.2756, lng: 112.7378 },
-  { id: 'SPBE-003', name: 'SPBE Bandung Utara', location: 'Bandung', stock: 12000, capacity: 18000, status: 'normal', lat: -6.9147, lng: 107.6098 },
-  { id: 'SPBE-004', name: 'SPBE Medan Barat', location: 'Medan', stock: 2500, capacity: 12000, status: 'critical', lat: 3.5952, lng: 98.6722 },
-  { id: 'SPBE-005', name: 'SPBE Makassar', location: 'Makassar', stock: 9800, capacity: 14000, status: 'normal', lat: -5.1477, lng: 119.4327 }
+// Enhanced mock data for maps with more locations
+const enhancedSPBEData = [
+  // Jakarta Region
+  { id: 'SPBE-001', name: 'SPBE Jakarta Selatan', location: 'Jakarta', stock: 15000, capacity: 20000, status: 'normal', lat: -6.2615, lng: 106.7815, region: 'Jakarta', dailyThroughput: 2500 },
+  { id: 'SPBE-002', name: 'SPBE Jakarta Utara', location: 'Jakarta', stock: 18000, capacity: 25000, status: 'normal', lat: -6.1244, lng: 106.8294, region: 'Jakarta', dailyThroughput: 3200 },
+  { id: 'SPBE-003', name: 'SPBE Jakarta Barat', location: 'Jakarta', stock: 8500, capacity: 15000, status: 'low', lat: -6.1751, lng: 106.7650, region: 'Jakarta', dailyThroughput: 1800 },
+  { id: 'SPBE-004', name: 'SPBE Jakarta Timur', location: 'Jakarta', stock: 22000, capacity: 30000, status: 'normal', lat: -6.2146, lng: 106.8451, region: 'Jakarta', dailyThroughput: 4100 },
+  { id: 'SPBE-005', name: 'SPBE Jakarta Pusat', location: 'Jakarta', stock: 12000, capacity: 18000, status: 'normal', lat: -6.2088, lng: 106.8456, region: 'Jakarta', dailyThroughput: 2800 },
+  
+  // Surabaya Region
+  { id: 'SPBE-006', name: 'SPBE Surabaya Timur', location: 'Surabaya', stock: 8500, capacity: 15000, status: 'low', lat: -7.2756, lng: 112.7378, region: 'Surabaya', dailyThroughput: 1900 },
+  { id: 'SPBE-007', name: 'SPBE Surabaya Barat', location: 'Surabaya', stock: 14000, capacity: 20000, status: 'normal', lat: -7.2575, lng: 112.7521, region: 'Surabaya', dailyThroughput: 2600 },
+  { id: 'SPBE-008', name: 'SPBE Surabaya Selatan', location: 'Surabaya', stock: 16500, capacity: 22000, status: 'normal', lat: -7.3194, lng: 112.7277, region: 'Surabaya', dailyThroughput: 3100 },
+  
+  // Bandung Region
+  { id: 'SPBE-009', name: 'SPBE Bandung Utara', location: 'Bandung', stock: 12000, capacity: 18000, status: 'normal', lat: -6.9147, lng: 107.6098, region: 'Bandung', dailyThroughput: 2400 },
+  { id: 'SPBE-010', name: 'SPBE Bandung Selatan', location: 'Bandung', stock: 7500, capacity: 15000, status: 'low', lat: -6.9175, lng: 107.6191, region: 'Bandung', dailyThroughput: 1600 },
+  { id: 'SPBE-011', name: 'SPBE Cimahi', location: 'Bandung', stock: 13500, capacity: 20000, status: 'normal', lat: -6.8737, lng: 107.5420, region: 'Bandung', dailyThroughput: 2200 },
+  
+  // Medan Region
+  { id: 'SPBE-012', name: 'SPBE Medan Barat', location: 'Medan', stock: 2500, capacity: 12000, status: 'critical', lat: 3.5952, lng: 98.6722, region: 'Medan', dailyThroughput: 800 },
+  { id: 'SPBE-013', name: 'SPBE Medan Timur', location: 'Medan', stock: 9500, capacity: 16000, status: 'normal', lat: 3.5840, lng: 98.7065, region: 'Medan', dailyThroughput: 2100 },
+  { id: 'SPBE-014', name: 'SPBE Binjai', location: 'Medan', stock: 11000, capacity: 18000, status: 'normal', lat: 3.6004, lng: 98.4855, region: 'Medan', dailyThroughput: 1900 },
+  
+  // Makassar Region
+  { id: 'SPBE-015', name: 'SPBE Makassar', location: 'Makassar', stock: 9800, capacity: 14000, status: 'normal', lat: -5.1477, lng: 119.4327, region: 'Makassar', dailyThroughput: 2000 },
+  { id: 'SPBE-016', name: 'SPBE Gowa', location: 'Makassar', stock: 8200, capacity: 15000, status: 'normal', lat: -5.2117, lng: 119.4414, region: 'Makassar', dailyThroughput: 1700 },
+  
+  // Semarang Region
+  { id: 'SPBE-017', name: 'SPBE Semarang Tengah', location: 'Semarang', stock: 15500, capacity: 22000, status: 'normal', lat: -6.9665, lng: 110.4203, region: 'Semarang', dailyThroughput: 2800 },
+  { id: 'SPBE-018', name: 'SPBE Semarang Barat', location: 'Semarang', stock: 6800, capacity: 12000, status: 'critical', lat: -6.9932, lng: 110.4036, region: 'Semarang', dailyThroughput: 1200 },
+  
+  // Denpasar Region
+  { id: 'SPBE-019', name: 'SPBE Denpasar', location: 'Denpasar', stock: 11200, capacity: 16000, status: 'normal', lat: -8.6705, lng: 115.2126, region: 'Denpasar', dailyThroughput: 2300 },
+  { id: 'SPBE-020', name: 'SPBE Badung', location: 'Denpasar', stock: 7900, capacity: 14000, status: 'low', lat: -8.5569, lng: 115.1761, region: 'Denpasar', dailyThroughput: 1500 }
+];
+
+// Enhanced vehicle/truck data with routes
+const enhancedVehicleData = [
+  { id: 'TRK-001', driver: 'Ahmad Sutrisno', currentLat: -6.2088, currentLng: 106.8456, destination: 'SPBE Jakarta Selatan', status: 'en-route', capacity: 5000, currentLoad: 4500, eta: '14:30' },
+  { id: 'TRK-002', driver: 'Budi Hartono', currentLat: -6.1751, currentLng: 106.7650, destination: 'SPBE Jakarta Barat', status: 'loading', capacity: 6000, currentLoad: 0, eta: '15:45' },
+  { id: 'TRK-003', driver: 'Candra Wijaya', currentLat: -7.2756, currentLng: 112.7378, destination: 'SPBE Surabaya Timur', status: 'en-route', capacity: 4500, currentLoad: 4200, eta: '16:15' },
+  { id: 'TRK-004', driver: 'Dedi Kurniawan', currentLat: -6.9147, currentLng: 107.6098, destination: 'SPBE Bandung Utara', status: 'delivered', capacity: 5500, currentLoad: 0, eta: 'Completed' },
+  { id: 'TRK-005', driver: 'Eko Prasetyo', currentLat: 3.5952, currentLng: 98.6722, destination: 'SPBE Medan Barat', status: 'critical-delivery', capacity: 7000, currentLoad: 6500, eta: '13:45' }
 ];
 
 const mockVehicles = [
