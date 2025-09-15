@@ -78,6 +78,19 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
 
   const stats = getTotalStats();
 
+  // Show SPBE Detail if selected
+  if (showSPBEDetail && selectedSPBEForDetail) {
+    return (
+      <SPBEDetail 
+        spbe={selectedSPBEForDetail} 
+        onBack={() => {
+          setShowSPBEDetail(false);
+          setSelectedSPBEForDetail(null);
+        }} 
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Header */}
