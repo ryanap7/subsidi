@@ -1,0 +1,163 @@
+[
+  {
+    "test": "API Root",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.418145",
+    "response_data": ""
+  },
+  {
+    "test": "Auth Login Valid",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.430530",
+    "response_data": ""
+  },
+  {
+    "test": "Auth Login Invalid",
+    "success": false,
+    "message": "Expected 401, got HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.442719",
+    "response_data": ""
+  },
+  {
+    "test": "Auth Login Missing Fields",
+    "success": false,
+    "message": "Expected 401, got HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.455558",
+    "response_data": ""
+  },
+  {
+    "test": "Auth Logout",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.466672",
+    "response_data": ""
+  },
+  {
+    "test": "SPBE Get All",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.479276",
+    "response_data": ""
+  },
+  {
+    "test": "SPBE Get Specific",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.488774",
+    "response_data": ""
+  },
+  {
+    "test": "SPBE Get Nonexistent",
+    "success": false,
+    "message": "Expected 404, got HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.497651",
+    "response_data": ""
+  },
+  {
+    "test": "SPBE Update Stock",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.506663",
+    "response_data": ""
+  },
+  {
+    "test": "Vehicles Get All",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.515373",
+    "response_data": ""
+  },
+  {
+    "test": "Vehicles Get Specific",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.523314",
+    "response_data": ""
+  },
+  {
+    "test": "Vehicles Update Position",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.531740",
+    "response_data": ""
+  },
+  {
+    "test": "Deliveries Get All",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.539958",
+    "response_data": ""
+  },
+  {
+    "test": "Deliveries Get Specific",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.546448",
+    "response_data": ""
+  },
+  {
+    "test": "Deliveries Update Progress",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.552872",
+    "response_data": ""
+  },
+  {
+    "test": "Alerts Get All",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.557747",
+    "response_data": ""
+  },
+  {
+    "test": "Alerts Resolve",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.563096",
+    "response_data": ""
+  },
+  {
+    "test": "Metrics Get All",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.567996",
+    "response_data": ""
+  },
+  {
+    "test": "Metrics Supply Chain",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.573742",
+    "response_data": ""
+  },
+  {
+    "test": "Metrics Operational",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.579259",
+    "response_data": ""
+  },
+  {
+    "test": "Routes Optimize",
+    "success": false,
+    "message": "HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.584349",
+    "response_data": ""
+  },
+  {
+    "test": "Routes Optimize Missing Fields",
+    "success": false,
+    "message": "Expected 400, got HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.590559",
+    "response_data": ""
+  },
+  {
+    "test": "Invalid Endpoint",
+    "success": false,
+    "message": "Expected 404, got HTTP 502",
+    "timestamp": "2025-09-15T03:22:09.598246",
+    "response_data": ""
+  }
+]
