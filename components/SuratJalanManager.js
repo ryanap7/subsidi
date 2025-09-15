@@ -510,108 +510,148 @@ export default function SuratJalanManager({ onTrackDelivery }) {
         </Dialog>
       </div>
 
-      {/* Surat Jalan List - 1 card per line with pagination */}
-      <div className="space-y-4">
+      {/* Surat Jalan List - Beautiful 1 card per line design */}
+      <div className="space-y-6">
         {currentItems.map((sj) => {
           const statusBadge = getStatusBadge(sj.status);
           return (
             <motion.div
               key={sj.id}
-              whileHover={{ scale: 1.01 }}
+              whileHover={{ scale: 1.005, y: -2 }}
               className="cursor-pointer"
             >
-              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                    {/* Left Section - Basic Info */}
-                    <div className="lg:col-span-1 space-y-3">
-                      <div className="flex justify-between items-start lg:flex-col lg:items-start lg:space-y-2">
-                        <div>
-                          <CardTitle className="text-xl text-gray-900">{sj.number}</CardTitle>
-                          <CardDescription className="text-gray-600">
-                            {new Date(sj.date).toLocaleDateString('id-ID')}
+              <Card className="bg-gradient-to-r from-white via-blue-50/30 to-indigo-50/30 backdrop-blur-xl border-0 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-blue-500 to-indigo-600"></div>
+                <CardContent className="p-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    {/* Left Section - Document Info with Icon */}
+                    <div className="lg:col-span-3 space-y-4">
+                      <div className="flex items-start space-x-4">
+                        <div className="p-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 shadow-lg">
+                          <FileText className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <CardTitle className="text-xl font-bold text-gray-900 mb-1">{sj.number}</CardTitle>
+                          <CardDescription className="text-gray-600 flex items-center">
+                            <Calendar className="w-4 h-4 mr-2" />
+                            {new Date(sj.date).toLocaleDateString('id-ID', { 
+                              weekday: 'long', 
+                              year: 'numeric', 
+                              month: 'long', 
+                              day: 'numeric' 
+                            })}
                           </CardDescription>
                         </div>
-                        <Badge variant={statusBadge.variant} className={`${statusBadge.color} text-white`}>
+                      </div>
+                      
+                      <div className="flex justify-start">
+                        <Badge 
+                          variant={statusBadge.variant} 
+                          className={`${statusBadge.color} text-white px-4 py-2 text-sm font-medium shadow-lg`}
+                        >
                           {statusBadge.text}
                         </Badge>
                       </div>
-                      
+                    </div>
+
+                    {/* Driver & Vehicle Section */}
+                    <div className="lg:col-span-2 space-y-3">
+                      <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Pengemudi & Kendaraan</h4>
                       <div className="space-y-2">
-                        <div className="flex items-center text-sm text-gray-600">
-                          <User className="w-4 h-4 mr-2 flex-shrink-0" />
-                          <span>{sj.driver}</span>
+                        <div className="flex items-center text-gray-600">
+                          <div className="p-2 rounded-lg bg-blue-100 mr-3">
+                            <User className="w-4 h-4 text-blue-600" />
+                          </div>
+                          <span className="font-medium">{sj.driver}</span>
                         </div>
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Truck className="w-4 h-4 mr-2 flex-shrink-0" />
-                          <span>{sj.vehicle}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Middle Section - Route & Volume */}
-                    <div className="lg:col-span-1 space-y-3">
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-2">Informasi Rute</h4>
-                        <div className="flex items-center text-sm text-gray-600 mb-2">
-                          <Route className="w-4 h-4 mr-2 flex-shrink-0" />
-                          <span>{sj.route}</span>
-                        </div>
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Package className="w-4 h-4 mr-2 flex-shrink-0" />
-                          <span>{sj.totalVolume.toLocaleString()} L</span>
+                        <div className="flex items-center text-gray-600">
+                          <div className="p-2 rounded-lg bg-purple-100 mr-3">
+                            <Truck className="w-4 h-4 text-purple-600" />
+                          </div>
+                          <span className="font-medium">{sj.vehicle}</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Right Section - Destinations */}
-                    <div className="lg:col-span-1 space-y-3">
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-2">
-                          Destinasi ({sj.destinations.length})
-                        </h4>
-                        <div className="space-y-1 max-h-20 overflow-y-auto">
-                          {sj.destinations.map((dest, index) => (
-                            <div key={index} className="flex justify-between items-center text-xs">
-                              <span className="text-gray-600 line-clamp-1 flex-1">{dest.spbe}</span>
-                              <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
-                                <span className="font-medium text-gray-900">{dest.volume.toLocaleString()}L</span>
-                                {dest.delivered ? (
-                                  <CheckCircle2 className="w-3 h-3 text-green-500" />
-                                ) : (
-                                  <Clock className="w-3 h-3 text-yellow-500" />
-                                )}
-                              </div>
+                    {/* Route & Volume Section */}
+                    <div className="lg:col-span-3 space-y-3">
+                      <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Informasi Pengiriman</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center text-gray-600">
+                          <div className="p-2 rounded-lg bg-green-100 mr-3">
+                            <Route className="w-4 h-4 text-green-600" />
+                          </div>
+                          <span className="font-medium">{sj.route}</span>
+                        </div>
+                        <div className="flex items-center text-gray-600">
+                          <div className="p-2 rounded-lg bg-orange-100 mr-3">
+                            <Package className="w-4 h-4 text-orange-600" />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="font-bold text-lg text-gray-900">{sj.totalVolume.toLocaleString()} L</span>
+                            <span className="text-xs text-gray-500">Total Volume</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Destinations Section */}
+                    <div className="lg:col-span-2 space-y-3">
+                      <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                        Destinasi ({sj.destinations.length})
+                      </h4>
+                      <div className="space-y-2 max-h-24 overflow-y-auto">
+                        {sj.destinations.map((dest, index) => (
+                          <div key={index} className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border border-gray-100">
+                            <div className="flex items-center flex-1">
+                              <div className="w-2 h-2 rounded-full bg-blue-500 mr-2 flex-shrink-0"></div>
+                              <span className="text-xs font-medium text-gray-700 line-clamp-1 flex-1">
+                                {dest.spbe}
+                              </span>
                             </div>
-                          ))}
-                        </div>
+                            <div className="flex items-center space-x-2 ml-2">
+                              <span className="text-xs font-bold text-gray-900">{dest.volume.toLocaleString()}L</span>
+                              {dest.delivered ? (
+                                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                              ) : (
+                                <Clock className="w-4 h-4 text-amber-500" />
+                              )}
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
                     {/* Actions Section */}
-                    <div className="lg:col-span-1 flex flex-col justify-center space-y-3">
+                    <div className="lg:col-span-2 flex flex-col space-y-3">
                       <Button 
-                        className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                        className="w-full bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 hover:from-blue-600 hover:via-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 py-3 font-medium"
                         onClick={() => handleTrackDelivery(sj)}
                       >
-                        <Navigation className="w-4 h-4 mr-2" />
+                        <Navigation className="w-5 h-5 mr-2" />
                         Lacak Pengiriman
                       </Button>
-                      <Button 
-                        variant="outline"
-                        className="w-full text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transform hover:scale-105 transition-all duration-200"
-                        onClick={() => setSelectedSJ(sj)}
-                      >
-                        <Eye className="w-4 h-4 mr-2" />
-                        Lihat Detail
-                      </Button>
-                      <Button 
-                        variant="outline"
-                        className="w-full text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:border-green-300 transform hover:scale-105 transition-all duration-200"
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        Unduh PDF
-                      </Button>
+                      
+                      <div className="grid grid-cols-2 gap-2">
+                        <Button 
+                          variant="outline"
+                          size="sm"
+                          className="text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 hover:text-blue-700 transform hover:scale-105 transition-all duration-200"
+                          onClick={() => setSelectedSJ(sj)}
+                        >
+                          <Eye className="w-4 h-4 mr-1" />
+                          Detail
+                        </Button>
+                        <Button 
+                          variant="outline"
+                          size="sm"
+                          className="text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:border-green-300 hover:text-green-700 transform hover:scale-105 transition-all duration-200"
+                        >
+                          <Download className="w-4 h-4 mr-1" />
+                          PDF
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -621,54 +661,61 @@ export default function SuratJalanManager({ onTrackDelivery }) {
         })}
       </div>
 
-      {/* Pagination */}
+      {/* Enhanced Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <span>
-              Menampilkan {startIndex + 1}-{Math.min(endIndex, suratJalanList.length)} dari {suratJalanList.length} surat jalan
-            </span>
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={goToPreviousPage}
-              disabled={currentPage === 1}
-              className="text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Sebelumnya
-            </Button>
-            
-            <div className="flex items-center space-x-1">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2 text-gray-600">
+                <div className="p-2 rounded-lg bg-blue-100">
+                  <FileText className="w-4 h-4 text-blue-600" />
+                </div>
+                <span className="font-medium">
+                  Menampilkan {startIndex + 1}-{Math.min(endIndex, suratJalanList.length)} dari {suratJalanList.length} surat jalan
+                </span>
+              </div>
+              
+              <div className="flex items-center space-x-3">
                 <Button
-                  key={page}
-                  variant={currentPage === page ? "default" : "outline"}
+                  variant="outline"
                   size="sm"
-                  onClick={() => goToPage(page)}
-                  className={currentPage === page ? 
-                    'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg' : 
-                    'text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300'
-                  }
+                  onClick={goToPreviousPage}
+                  disabled={currentPage === 1}
+                  className="text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200"
                 >
-                  {page}
+                  Sebelumnya
                 </Button>
-              ))}
+                
+                <div className="flex items-center space-x-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <Button
+                      key={page}
+                      variant={currentPage === page ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => goToPage(page)}
+                      className={currentPage === page ? 
+                        'bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white shadow-lg transform hover:scale-110 transition-all duration-200' : 
+                        'text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transform hover:scale-105 transition-all duration-200'
+                      }
+                    >
+                      {page}
+                    </Button>
+                  ))}
+                </div>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={goToNextPage}
+                  disabled={currentPage === totalPages}
+                  className="text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200"
+                >
+                  Selanjutnya
+                </Button>
+              </div>
             </div>
-            
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={goToNextPage}
-              disabled={currentPage === totalPages}
-              className="text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Selanjutnya
-            </Button>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* Detail Modal */}
