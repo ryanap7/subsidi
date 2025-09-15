@@ -45,7 +45,46 @@ const mockSuratJalan = [
     ],
     totalVolume: 8000,
     route: 'Jakarta → Bandung',
-    notes: 'Pengiriman sesuai jadwal'
+    notes: 'Pengiriman sesuai jadwal',
+    trackingData: {
+      currentLocation: { lat: -6.9147, lng: 107.6098 },
+      route: [
+        {
+          id: 'depot-1',
+          name: 'Depot Jakarta',
+          position: { lat: -6.2088, lng: 106.8456 },
+          status: 'completed',
+          arrivalTime: '06:00',
+          completedTime: '06:30',
+          type: 'depot'
+        },
+        {
+          id: 'spbe-1',
+          name: 'SPBE Jakarta Selatan',
+          position: { lat: -6.2615, lng: 106.7815 },
+          status: 'completed',
+          arrivalTime: '08:00',
+          completedTime: '08:45',
+          type: 'spbe',
+          volume: 5000
+        },
+        {
+          id: 'spbe-2',
+          name: 'SPBE Bandung Utara',
+          position: { lat: -6.9147, lng: 107.6098 },
+          status: 'completed',
+          arrivalTime: '12:00',
+          completedTime: '12:30',
+          type: 'spbe',
+          volume: 3000
+        }
+      ],
+      routePath: [
+        { lat: -6.2088, lng: 106.8456 },
+        { lat: -6.2615, lng: 106.7815 },
+        { lat: -6.9147, lng: 107.6098 }
+      ]
+    }
   },
   {
     id: 'SJ-002',
@@ -59,7 +98,47 @@ const mockSuratJalan = [
     ],
     totalVolume: 4200,
     route: 'Surabaya',
-    notes: 'Dalam perjalanan'
+    notes: 'Dalam perjalanan',
+    trackingData: {
+      currentLocation: { lat: -7.2504, lng: 112.7688 },
+      route: [
+        {
+          id: 'depot-2',
+          name: 'Depot Surabaya',
+          position: { lat: -7.2575, lng: 112.7521 },
+          status: 'completed',
+          arrivalTime: '08:00',
+          completedTime: '08:30',
+          type: 'depot'
+        },
+        {
+          id: 'station-1',
+          name: 'Stasiun Transit Gresik',
+          position: { lat: -7.1563, lng: 112.6536 },
+          status: 'completed',
+          arrivalTime: '09:15',
+          completedTime: '09:30',
+          type: 'station'
+        },
+        {
+          id: 'spbe-3',
+          name: 'SPBE Surabaya Timur',
+          position: { lat: -7.2756, lng: 112.7378 },
+          status: 'in-progress',
+          arrivalTime: '10:45',
+          completedTime: null,
+          type: 'spbe',
+          volume: 4200
+        }
+      ],
+      routePath: [
+        { lat: -7.2575, lng: 112.7521 },
+        { lat: -7.2300, lng: 112.7200 },
+        { lat: -7.1563, lng: 112.6536 },
+        { lat: -7.2000, lng: 112.7000 },
+        { lat: -7.2756, lng: 112.7378 }
+      ]
+    }
   },
   {
     id: 'SJ-003',
@@ -74,11 +153,50 @@ const mockSuratJalan = [
     ],
     totalVolume: 8000,
     route: 'Medan → Makassar',
-    notes: 'Menunggu konfirmasi jadwal'
+    notes: 'Menunggu konfirmasi jadwal',
+    trackingData: {
+      currentLocation: { lat: 3.5952, lng: 98.6722 },
+      route: [
+        {
+          id: 'depot-3',
+          name: 'Depot Medan',
+          position: { lat: 3.5833, lng: 98.6667 },
+          status: 'scheduled',
+          arrivalTime: '07:00',
+          completedTime: null,
+          type: 'depot'
+        },
+        {
+          id: 'spbe-4',
+          name: 'SPBE Medan Barat',
+          position: { lat: 3.5952, lng: 98.6722 },
+          status: 'scheduled',
+          arrivalTime: '09:00',
+          completedTime: null,
+          type: 'spbe',
+          volume: 6000
+        },
+        {
+          id: 'spbe-5',
+          name: 'SPBE Makassar',
+          position: { lat: -5.1477, lng: 119.4327 },
+          status: 'scheduled',
+          arrivalTime: '18:00',
+          completedTime: null,
+          type: 'spbe',
+          volume: 2000
+        }
+      ],
+      routePath: [
+        { lat: 3.5833, lng: 98.6667 },
+        { lat: 3.5952, lng: 98.6722 },
+        { lat: -5.1477, lng: 119.4327 }
+      ]
+    }
   }
 ];
 
-export default function SuratJalanManager() {
+export default function SuratJalanManager({ onTrackDelivery }) {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedSJ, setSelectedSJ] = useState(null);
   const [suratJalanList, setSuratJalanList] = useState(mockSuratJalan);
@@ -158,6 +276,12 @@ export default function SuratJalanManager() {
 
   const getTotalVolume = () => {
     return formData.destinations.reduce((sum, dest) => sum + (parseInt(dest.volume) || 0), 0);
+  };
+
+  const handleTrackDelivery = (sj) => {
+    if (onTrackDelivery) {
+      onTrackDelivery(sj.trackingData);
+    }
   };
 
   return (
@@ -360,7 +484,7 @@ export default function SuratJalanManager() {
         </Dialog>
       </div>
 
-      {/* Surat Jalan List */}
+      {/* Surat Jalan List - Fixed card heights */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {suratJalanList.map((sj) => {
           const statusBadge = getStatusBadge(sj.status);
@@ -370,46 +494,46 @@ export default function SuratJalanManager() {
               whileHover={{ scale: 1.02 }}
               className="cursor-pointer"
             >
-              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 h-80">
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-lg text-gray-900">{sj.number}</CardTitle>
+                    <div className="flex-1">
+                      <CardTitle className="text-lg text-gray-900 line-clamp-1">{sj.number}</CardTitle>
                       <CardDescription className="text-gray-600">
                         {new Date(sj.date).toLocaleDateString('id-ID')}
                       </CardDescription>
                     </div>
-                    <Badge variant={statusBadge.variant} className={`${statusBadge.color} text-white`}>
+                    <Badge variant={statusBadge.variant} className={`${statusBadge.color} text-white flex-shrink-0 ml-2`}>
                       {statusBadge.text}
                     </Badge>
                   </div>
                 </CardHeader>
                 
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
+                <CardContent className="space-y-4 flex-1 flex flex-col">
+                  <div className="space-y-2 flex-1">
                     <div className="flex items-center text-sm text-gray-600">
-                      <User className="w-4 h-4 mr-2" />
-                      <span>{sj.driver} - {sj.vehicle}</span>
+                      <User className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="line-clamp-1">{sj.driver} - {sj.vehicle}</span>
                     </div>
                     
                     <div className="flex items-center text-sm text-gray-600">
-                      <Route className="w-4 h-4 mr-2" />
-                      <span>{sj.route}</span>
+                      <Route className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="line-clamp-1">{sj.route}</span>
                     </div>
                     
                     <div className="flex items-center text-sm text-gray-600">
-                      <Package className="w-4 h-4 mr-2" />
+                      <Package className="w-4 h-4 mr-2 flex-shrink-0" />
                       <span>{sj.totalVolume.toLocaleString()} L</span>
                     </div>
                   </div>
                   
                   <div className="space-y-2">
                     <p className="text-sm font-medium text-gray-700">Destinasi ({sj.destinations.length}):</p>
-                    <div className="space-y-1">
+                    <div className="space-y-1 max-h-20 overflow-y-auto">
                       {sj.destinations.map((dest, index) => (
                         <div key={index} className="flex justify-between items-center text-xs">
-                          <span className="text-gray-600">{dest.spbe}</span>
-                          <div className="flex items-center space-x-2">
+                          <span className="text-gray-600 line-clamp-1 flex-1">{dest.spbe}</span>
+                          <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
                             <span className="font-medium text-gray-900">{dest.volume.toLocaleString()}L</span>
                             {dest.delivered ? (
                               <CheckCircle2 className="w-3 h-3 text-green-500" />
@@ -426,17 +550,18 @@ export default function SuratJalanManager() {
                     <Button 
                       size="sm" 
                       className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
-                      onClick={() => setSelectedSJ(sj)}
+                      onClick={() => handleTrackDelivery(sj)}
                     >
-                      <Eye className="w-3 h-3 mr-1" />
-                      Detail
+                      <Navigation className="w-3 h-3 mr-1" />
+                      Lacak
                     </Button>
                     <Button 
                       size="sm" 
                       className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                      onClick={() => setSelectedSJ(sj)}
                     >
-                      <Download className="w-3 h-3 mr-1" />
-                      Unduh
+                      <Eye className="w-3 h-3 mr-1" />
+                      Detail
                     </Button>
                   </div>
                 </CardContent>
@@ -537,7 +662,10 @@ export default function SuratJalanManager() {
               )}
               
               <div className="flex space-x-3 pt-4 border-t">
-                <Button className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                <Button 
+                  className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                  onClick={() => handleTrackDelivery(selectedSJ)}
+                >
                   <Navigation className="w-4 h-4 mr-2" />
                   Lacak Pengiriman
                 </Button>

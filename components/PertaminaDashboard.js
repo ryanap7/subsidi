@@ -49,6 +49,7 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
   const [selectedSPBE, setSelectedSPBE] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const [mapView, setMapView] = useState('distribution');
+  const [trackingData, setTrackingData] = useState(null);
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -62,6 +63,10 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
     const activeVehicles = mockVehicles.filter(v => v.status === 'active').length;
     
     return { totalCapacity, totalStock, utilizationRate, activeVehicles };
+  };
+
+  const handleTrackDelivery = (tracking) => {
+    setTrackingData(tracking);
   };
 
   const stats = getTotalStats();
@@ -313,10 +318,10 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
           <TabsContent value="logistics" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
-                <SuratJalanManager />
+                <SuratJalanManager onTrackDelivery={handleTrackDelivery} />
               </div>
               <div>
-                <LogisticsTrackingMap />
+                <LogisticsTrackingMap trackingData={trackingData} />
               </div>
             </div>
           </TabsContent>

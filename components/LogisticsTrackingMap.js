@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { 
   MapPin, Truck, CheckCircle2, Clock, Route, 
-  Navigation, Target, Package, AlertCircle
+  Navigation, Target, Package, AlertCircle, Building2
 } from 'lucide-react';
 import { GoogleMap, Marker, Polyline, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
 
@@ -52,57 +52,20 @@ const mapOptions = {
   ]
 };
 
-// Mock tracking data
-const mockTrackingData = [
-  {
-    id: 'SJ-002',
-    number: 'SJ/PTM/2024/002',
-    driver: 'Budi Hartono',
-    vehicle: 'TRK-002',
-    status: 'in-progress',
-    currentLocation: { lat: -7.2504, lng: 112.7688 },
-    route: [
-      {
-        id: 'depot',
-        name: 'Depot Surabaya',
-        position: { lat: -7.2575, lng: 112.7521 },
-        status: 'completed',
-        arrivalTime: '08:00',
-        completedTime: '08:30',
-        type: 'depot'
-      },
-      {
-        id: 'station-1',
-        name: 'Stasiun Transit Gresik',
-        position: { lat: -7.1563, lng: 112.6536 },
-        status: 'completed',
-        arrivalTime: '09:15',
-        completedTime: '09:30',
-        type: 'station'
-      },
-      {
-        id: 'spbe-1',
-        name: 'SPBE Surabaya Timur',
-        position: { lat: -7.2756, lng: 112.7378 },
-        status: 'in-progress',
-        arrivalTime: '10:45',
-        completedTime: null,
-        type: 'destination',
-        volume: 4200
-      }
-    ],
-    routePath: [
-      { lat: -7.2575, lng: 112.7521 },
-      { lat: -7.2300, lng: 112.7200 },
-      { lat: -7.1563, lng: 112.6536 },
-      { lat: -7.2000, lng: 112.7000 },
-      { lat: -7.2756, lng: 112.7378 }
-    ]
-  }
-];
+// Default tracking data
+const defaultTrackingData = {
+  id: 'default',
+  number: 'Pilih Surat Jalan',
+  driver: 'Tidak ada data',
+  vehicle: '',
+  status: 'idle',
+  currentLocation: { lat: -6.2088, lng: 106.8456 },
+  route: [],
+  routePath: []
+};
 
-export default function LogisticsTrackingMap() {
-  const [selectedDelivery, setSelectedDelivery] = useState(mockTrackingData[0]);
+export default function LogisticsTrackingMap({ trackingData = null }) {
+  const [selectedDelivery, setSelectedDelivery] = useState(trackingData || defaultTrackingData);
   const [selectedMarker, setSelectedMarker] = useState(null);
 
   const { isLoaded } = useJsApiLoader({
@@ -110,9 +73,15 @@ export default function LogisticsTrackingMap() {
     libraries: ['geometry', 'drawing', 'places'],
   });
 
+  // Update tracking data when prop changes
+  useEffect(() => {
+    if (trackingData) {
+      setSelectedDelivery(trackingData);
+    }
+  }, [trackingData]);
+
   const getStationIcon = (station) => {
     const baseIcon = {
-      scale: 10,
       fillOpacity: 1,
       strokeColor: '#ffffff',
       strokeWeight: 3,
@@ -121,32 +90,56 @@ export default function LogisticsTrackingMap() {
     if (station.type === 'depot') {
       return {
         ...baseIcon,
-        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
+        path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z',
+        scale: 1.5,
         fillColor: station.status === 'completed' ? '#10b981' : '#6b7280',
+        anchor: { x: 12, y: 24 }
       };
-    } else if (station.type === 'destination') {
+    } else if (station.type === 'spbe') {
       return {
         ...baseIcon,
-        scale: 12,
-        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+        path: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z',
+        scale: 1.2,
         fillColor: station.status === 'completed' ? '#10b981' : 
                    station.status === 'in-progress' ? '#3b82f6' : '#6b7280',
+        anchor: { x: 12, y: 12 }
       };
     } else {
       return {
         ...baseIcon,
+        path: google.maps.SymbolPath.CIRCLE,
         scale: 8,
-        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
         fillColor: station.status === 'completed' ? '#10b981' : 
                    station.status === 'in-progress' ? '#3b82f6' : '#6b7280',
       };
     }
   };
 
+  const getTruckIcon = () => {
+    return {
+      path: 'M20,8h-3V4H3C1.89,4 1,4.89 1,6v12h2c0,1.66 1.34,3 3,3s3-1.34 3-3h6c0,1.66 1.34,3 3,3s3-1.34 3-3h2v-5L20,8z M6,18.5c-0.83,0-1.5-0.67-1.5-1.5s0.67-1.5 1.5-1.5s1.5,0.67 1.5,1.5S6.83,18.5 6,18.5z M18,18.5c-0.83,0-1.5-0.67-1.5-1.5s0.67-1.5 1.5-1.5s1.5,0.67 1.5,1.5S18.83,18.5 18,18.5z M17,12V9.5h2.5L21,12H17z',
+      scale: 1,
+      fillColor: '#ef4444',
+      fillOpacity: 1,
+      strokeColor: '#ffffff',
+      strokeWeight: 2,
+      anchor: { x: 12, y: 12 }
+    };
+  };
+
   const confirmStationCompletion = (stationId) => {
-    // Simulate confirming station completion
     console.log(`Confirming completion for station: ${stationId}`);
-    // In real app, this would update the backend and refresh the tracking data
+    // Update the station status to completed
+    const updatedRoute = selectedDelivery.route.map(station => 
+      station.id === stationId 
+        ? { ...station, status: 'completed', completedTime: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) }
+        : station
+    );
+    
+    setSelectedDelivery({
+      ...selectedDelivery,
+      route: updatedRoute
+    });
   };
 
   if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
@@ -163,6 +156,8 @@ export default function LogisticsTrackingMap() {
     );
   }
 
+  const hasTrackingData = selectedDelivery && selectedDelivery.route && selectedDelivery.route.length > 0;
+
   return (
     <div className="space-y-4">
       <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
@@ -177,39 +172,44 @@ export default function LogisticsTrackingMap() {
         </CardHeader>
         <CardContent>
           {/* Delivery Info */}
-          <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
-            <div className="flex justify-between items-start mb-2">
-              <div>
-                <h3 className="font-semibold text-gray-900">{selectedDelivery.number}</h3>
-                <p className="text-sm text-gray-600">{selectedDelivery.driver} - {selectedDelivery.vehicle}</p>
+          {hasTrackingData && (
+            <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <h3 className="font-semibold text-gray-900">{selectedDelivery.number}</h3>
+                  <p className="text-sm text-gray-600">{selectedDelivery.driver} - {selectedDelivery.vehicle}</p>
+                </div>
+                <Badge variant="secondary" className="bg-blue-500 text-white">
+                  {selectedDelivery.status === 'in-progress' ? 'Dalam Perjalanan' : 
+                   selectedDelivery.status === 'completed' ? 'Selesai' : 'Terjadwal'}
+                </Badge>
               </div>
-              <Badge variant="secondary" className="bg-blue-500 text-white">
-                Dalam Perjalanan
-              </Badge>
             </div>
-          </div>
+          )}
 
           {/* Map */}
           <div className="mb-4 rounded-lg overflow-hidden border border-gray-200">
             {isLoaded ? (
               <GoogleMap
                 mapContainerStyle={mapContainerStyle}
-                center={selectedDelivery.currentLocation}
-                zoom={10}
+                center={selectedDelivery.currentLocation || defaultCenter}
+                zoom={hasTrackingData ? 8 : 6}
                 options={mapOptions}
               >
                 {/* Route Path */}
-                <Polyline
-                  path={selectedDelivery.routePath}
-                  options={{
-                    strokeColor: '#3b82f6',
-                    strokeOpacity: 0.8,
-                    strokeWeight: 4,
-                  }}
-                />
+                {hasTrackingData && selectedDelivery.routePath && selectedDelivery.routePath.length > 0 && (
+                  <Polyline
+                    path={selectedDelivery.routePath}
+                    options={{
+                      strokeColor: '#3b82f6',
+                      strokeOpacity: 0.8,
+                      strokeWeight: 4,
+                    }}
+                  />
+                )}
 
                 {/* Station Markers */}
-                {selectedDelivery.route.map((station) => (
+                {hasTrackingData && selectedDelivery.route.map((station) => (
                   <Marker
                     key={station.id}
                     position={station.position}
@@ -219,27 +219,37 @@ export default function LogisticsTrackingMap() {
                 ))}
 
                 {/* Current Truck Position */}
-                <Marker
-                  position={selectedDelivery.currentLocation}
-                  icon={{
-                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                    scale: 8,
-                    fillColor: '#ef4444',
-                    fillOpacity: 1,
-                    strokeColor: '#ffffff',
-                    strokeWeight: 2,
-                    rotation: 45,
-                  }}
-                />
+                {hasTrackingData && selectedDelivery.currentLocation && (
+                  <Marker
+                    position={selectedDelivery.currentLocation}
+                    icon={getTruckIcon()}
+                    onClick={() => setSelectedMarker({
+                      id: 'truck',
+                      name: `${selectedDelivery.vehicle} - ${selectedDelivery.driver}`,
+                      type: 'truck',
+                      status: selectedDelivery.status
+                    })}
+                  />
+                )}
 
                 {/* Info Window */}
                 {selectedMarker && (
                   <InfoWindow
-                    position={selectedMarker.position}
+                    position={selectedMarker.position || selectedDelivery.currentLocation}
                     onCloseClick={() => setSelectedMarker(null)}
                   >
                     <div className="p-3 min-w-[200px]">
-                      <h4 className="font-semibold text-gray-900 mb-2">{selectedMarker.name}</h4>
+                      <div className="flex items-center space-x-2 mb-2">
+                        {selectedMarker.type === 'truck' ? (
+                          <Truck className="w-5 h-5 text-red-500" />
+                        ) : selectedMarker.type === 'spbe' ? (
+                          <Building2 className="w-5 h-5 text-blue-500" />
+                        ) : (
+                          <MapPin className="w-5 h-5 text-green-500" />
+                        )}
+                        <h4 className="font-semibold text-gray-900">{selectedMarker.name}</h4>
+                      </div>
+                      
                       <div className="space-y-1 text-sm">
                         <div className="flex justify-between">
                           <span className="text-gray-600">Status:</span>
@@ -251,16 +261,21 @@ export default function LogisticsTrackingMap() {
                              selectedMarker.status === 'in-progress' ? 'Dalam Proses' : 'Terjadwal'}
                           </span>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Waktu Tiba:</span>
-                          <span className="font-medium">{selectedMarker.arrivalTime}</span>
-                        </div>
+                        
+                        {selectedMarker.arrivalTime && (
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Waktu Tiba:</span>
+                            <span className="font-medium">{selectedMarker.arrivalTime}</span>
+                          </div>
+                        )}
+                        
                         {selectedMarker.completedTime && (
                           <div className="flex justify-between">
                             <span className="text-gray-600">Selesai:</span>
                             <span className="font-medium text-green-600">{selectedMarker.completedTime}</span>
                           </div>
                         )}
+                        
                         {selectedMarker.volume && (
                           <div className="flex justify-between">
                             <span className="text-gray-600">Volume:</span>
@@ -283,77 +298,87 @@ export default function LogisticsTrackingMap() {
           </div>
 
           {/* Station Progress List */}
-          <div className="space-y-3">
-            <h4 className="font-medium text-gray-900">Progress Stasiun</h4>
-            {selectedDelivery.route.map((station, index) => (
-              <motion.div
-                key={station.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex items-center space-x-4 p-3 rounded-lg bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200"
-              >
-                <div className="flex-shrink-0">
-                  {station.status === 'completed' ? (
-                    <CheckCircle2 className="w-6 h-6 text-green-500" />
-                  ) : station.status === 'in-progress' ? (
-                    <Clock className="w-6 h-6 text-blue-500" />
-                  ) : (
-                    <AlertCircle className="w-6 h-6 text-gray-400" />
-                  )}
-                </div>
-                
-                <div className="flex-1">
-                  <div className="flex justify-between items-start mb-1">
-                    <h5 className="font-medium text-gray-900">{station.name}</h5>
-                    <div className="text-xs text-gray-500">
-                      {station.type === 'depot' ? 'Depot' :
-                       station.type === 'destination' ? 'Tujuan' : 'Stasiun Transit'}
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="text-sm text-gray-600">
-                      Tiba: {station.arrivalTime} 
-                      {station.completedTime && (
-                        <span className="text-green-600 ml-2">
-                          | Selesai: {station.completedTime}
-                        </span>
+          {hasTrackingData ? (
+            <>
+              <div className="space-y-3">
+                <h4 className="font-medium text-gray-900">Progress Stasiun</h4>
+                {selectedDelivery.route.map((station, index) => (
+                  <motion.div
+                    key={station.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-center space-x-4 p-3 rounded-lg bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200"
+                  >
+                    <div className="flex-shrink-0">
+                      {station.status === 'completed' ? (
+                        <CheckCircle2 className="w-6 h-6 text-green-500" />
+                      ) : station.status === 'in-progress' ? (
+                        <Clock className="w-6 h-6 text-blue-500" />
+                      ) : (
+                        <AlertCircle className="w-6 h-6 text-gray-400" />
                       )}
                     </div>
-                    {station.status === 'in-progress' && (
-                      <Button
-                        size="sm"
-                        onClick={() => confirmStationCompletion(station.id)}
-                        className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 text-xs"
-                      >
-                        <CheckCircle2 className="w-3 h-3 mr-1" />
-                        Konfirmasi Selesai
-                      </Button>
-                    )}
-                  </div>
-                  {station.volume && (
-                    <div className="text-xs text-gray-500 mt-1">
-                      Volume: {station.volume.toLocaleString()}L
+                    
+                    <div className="flex-1">
+                      <div className="flex justify-between items-start mb-1">
+                        <h5 className="font-medium text-gray-900">{station.name}</h5>
+                        <div className="text-xs text-gray-500">
+                          {station.type === 'depot' ? 'Depot' :
+                           station.type === 'spbe' ? 'SPBE' : 'Stasiun Transit'}
+                        </div>  
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm text-gray-600">
+                          Tiba: {station.arrivalTime} 
+                          {station.completedTime && (
+                            <span className="text-green-600 ml-2">
+                              | Selesai: {station.completedTime}
+                            </span>
+                          )}
+                        </div>
+                        {station.status === 'in-progress' && (
+                          <Button
+                            size="sm"
+                            onClick={() => confirmStationCompletion(station.id)}
+                            className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 text-xs"
+                          >
+                            <CheckCircle2 className="w-3 h-3 mr-1" />
+                            Konfirmasi Selesai
+                          </Button>
+                        )}
+                      </div>
+                      {station.volume && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          Volume: {station.volume.toLocaleString()}L
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                  </motion.div>
+                ))}
+              </div>
 
-          {/* Progress Summary */}
-          <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-gray-700">Progress Keseluruhan</span>
-              <span className="text-sm font-bold text-emerald-700">
-                {selectedDelivery.route.filter(s => s.status === 'completed').length}/{selectedDelivery.route.length} Stasiun
-              </span>
+              {/* Progress Summary */}
+              <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-gray-700">Progress Keseluruhan</span>
+                  <span className="text-sm font-bold text-emerald-700">
+                    {selectedDelivery.route.filter(s => s.status === 'completed').length}/{selectedDelivery.route.length} Stasiun
+                  </span>
+                </div>
+                <Progress 
+                  value={(selectedDelivery.route.filter(s => s.status === 'completed').length / selectedDelivery.route.length) * 100} 
+                  className="h-3"
+                />
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-8">
+              <Navigation className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Pilih Surat Jalan untuk Tracking</h3>
+              <p className="text-gray-600">Klik tombol "Lacak" pada kartu surat jalan untuk melihat detail rute dan progress pengiriman</p>
             </div>
-            <Progress 
-              value={(selectedDelivery.route.filter(s => s.status === 'completed').length / selectedDelivery.route.length) * 100} 
-              className="h-3"
-            />
-          </div>
+          )}
         </CardContent>
       </Card>
     </div>
