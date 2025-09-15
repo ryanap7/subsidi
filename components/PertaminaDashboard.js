@@ -386,6 +386,11 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
             </motion.div>
           </TabsContent>
 
+          {/* SPBE Management Tab */}
+          <TabsContent value="spbe-management" className="space-y-6">
+            <SPBEManagement onViewDetail={handleSPBECardClick} />
+          </TabsContent>
+
           {/* Logistics Tab - Enhanced with tracking map */}
           <TabsContent value="logistics" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
