@@ -510,7 +510,7 @@ export default function SuratJalanManager({ onTrackDelivery }) {
         </Dialog>
       </div>
 
-      {/* Surat Jalan List - BEAUTIFUL Modern Card Design */}
+      {/* Surat Jalan List */}
       <div className="space-y-8">
         {currentItems.map((sj) => {
           const statusBadge = getStatusBadge(sj.status);
