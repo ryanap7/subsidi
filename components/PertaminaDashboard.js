@@ -403,108 +403,45 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
             </div>
           </TabsContent>
 
-          {/* Command Center Tab - SPBE only markers */}
-          <TabsContent value="command-center" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <div>
-                <h2 className="text-3xl font-bold text-gray-900">Pusat Kendali Distribusi</h2>
-                <p className="text-gray-600">Monitoring dan kontrol real-time operasional distribusi LPG nasional</p>
-              </div>
-            </div>
-
+          {/* Command Center Tab - Full Map Only */}
+          <TabsContent value="command-center" className="space-y-0">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="grid grid-cols-1 lg:grid-cols-4 gap-6"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="h-[calc(100vh-200px)]"
             >
-              {/* Map */}
-              <div className="lg:col-span-3">
-                <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg h-[600px]">
-                  <CardContent className="p-0 h-full">
-                    <GoogleMapComponent 
-                      spbeData={mockSPBEData}
-                      vehicles={[]} // No vehicles in command center
-                      view="spbe-only"
-                    />
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Control Panel */}
-              <div className="space-y-4">
-                <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="text-gray-900 text-lg">Status Operasional</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">SPBE Online</span>
-                      <div className="flex items-center">
-                        <Signal className="w-4 h-4 text-green-500 mr-2" />
-                        <span className="text-sm font-medium text-gray-900">{mockSPBEData.length}/5</span>
-                      </div>
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg h-full">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-gray-900 flex items-center text-xl">
+                      <Map className="w-6 h-6 mr-3" />
+                      Pusat Kendali Distribusi
+                    </CardTitle>
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setMapView(mapView === 'distribution' ? 'supply-chain' : 'distribution')}
+                        className="text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transform hover:scale-105 transition-all duration-200"
+                      >
+                        <Zap className="w-4 h-4 mr-2" />
+                        {mapView === 'distribution' ? 'Lihat Supply Chain' : 'Lihat Distribusi'}
+                      </Button>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Status Normal</span>
-                      <div className="flex items-center">
-                        <CheckCircle2 className="w-4 h-4 text-green-500 mr-2" />
-                        <span className="text-sm font-medium text-gray-900">{mockSPBEData.filter(s => s.status === 'normal').length}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Perlu Perhatian</span>
-                      <div className="flex items-center">
-                        <AlertTriangle className="w-4 h-4 text-yellow-500 mr-2" />
-                        <span className="text-sm font-medium text-gray-900">{mockSPBEData.filter(s => s.status === 'low' || s.status === 'critical').length}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="text-gray-900 text-lg">Aksi Cepat</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <Button size="sm" className="w-full justify-start text-sm bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-                      <Eye className="w-4 h-4 mr-2" />
-                      Lihat Detail SPBE
-                    </Button>
-                    <Button size="sm" className="w-full justify-start text-sm bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-                      <Filter className="w-4 h-4 mr-2" />
-                      Filter Status
-                    </Button>
-                    <Button size="sm" className="w-full justify-start text-sm bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-                      <Download className="w-4 h-4 mr-2" />
-                      Ekspor Laporan
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="text-gray-900 text-lg">Aktivitas Terkini</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {[
-                      { action: 'Stok SPBE Jakarta updated', time: '2 menit lalu', status: 'success' },
-                      { action: 'Alert stok rendah SPBE Surabaya', time: '5 menit lalu', status: 'warning' },
-                      { action: 'SPBE Makassar online', time: '10 menit lalu', status: 'info' }
-                    ].map((activity, index) => (
-                      <div key={index} className="flex items-center space-x-2 text-xs">
-                        <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                          activity.status === 'success' ? 'bg-green-400' :
-                          activity.status === 'warning' ? 'bg-yellow-400' : 'bg-blue-400'
-                        }`} />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-gray-900 truncate">{activity.action}</p>
-                          <p className="text-gray-500">{activity.time}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </div>
+                  </div>
+                  <CardDescription className="text-gray-600">
+                    {mapView === 'distribution' 
+                      ? 'Peta distribusi real-time dengan lokasi SPBE dan status operasional'
+                      : 'Visualisasi rantai pasok dan jalur distribusi LPG'
+                    }
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-4 h-[calc(100%-80px)]">
+                  <div className="w-full h-full rounded-xl overflow-hidden shadow-inner">
+                    <GoogleMapComponent mapView={mapView} />
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
           </TabsContent>
         </Tabs>
