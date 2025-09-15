@@ -209,7 +209,7 @@ export default function SPBEDetail({ spbe, onBack }) {
 
         {/* Detailed Tabs */}
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/90 backdrop-blur-lg shadow-lg border-0 h-14 p-1">
+          <TabsList className="grid w-full grid-cols-3 bg-white/90 backdrop-blur-lg shadow-lg border-0 h-14 p-1">
             <TabsTrigger value="overview" className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium">
               Overview
             </TabsTrigger>
@@ -218,9 +218,6 @@ export default function SPBEDetail({ spbe, onBack }) {
             </TabsTrigger>
             <TabsTrigger value="transactions" className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium">
               Transaksi
-            </TabsTrigger>
-            <TabsTrigger value="statistics" className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium">
-              Statistik
             </TabsTrigger>
           </TabsList>
 
