@@ -272,7 +272,14 @@ export default function LogisticsTrackingMap() {
                   </InfoWindow>
                 )}
               </GoogleMap>
-            </LoadScript>
+            ) : (
+              <div className="w-full h-[400px] flex items-center justify-center bg-gradient-to-br from-gray-50 to-blue-50">
+                <div className="text-center text-gray-600">
+                  <MapPin className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                  <p className="text-lg font-medium">Loading Map...</p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Station Progress List */}
