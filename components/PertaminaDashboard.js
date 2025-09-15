@@ -18,7 +18,7 @@ import {
 import GoogleMapComponent from '@/components/GoogleMapComponent';
 import SupplyChainMetrics from '@/components/SupplyChainMetrics';
 import AlertSystem from '@/components/AlertSystem';
-import SuratJalanManager from '@/components/SuratJalanManager';
+import SuratJalanManager from './SuratJalanManager';
 
 // Mock data untuk dashboard
 const mockSPBEData = [
