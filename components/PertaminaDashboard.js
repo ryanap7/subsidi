@@ -733,7 +733,11 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                 </CardHeader>
                 <CardContent className="p-4 h-[calc(100%-80px)]">
                   <div className="w-full h-full rounded-xl overflow-hidden shadow-inner">
-                    <GoogleMapComponent mapView={mapView} />
+                    <GoogleMapComponent 
+                      mapView={mapView} 
+                      spbeData={enhancedSPBEData}
+                      vehicles={enhancedVehicleData}
+                    />
                   </div>
                 </CardContent>
               </Card>
