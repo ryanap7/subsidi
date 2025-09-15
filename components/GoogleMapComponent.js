@@ -60,16 +60,18 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], view 
   const mapRef = useRef();
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    libraries: ['geometry', 'drawing', 'places'],
+  });
 
   const onLoad = useCallback((map) => {
     mapRef.current = map;
-    setIsLoaded(true);
   }, []);
 
   const onUnmount = useCallback(() => {
     mapRef.current = undefined;
-    setIsLoaded(false);
   }, []);
 
   const handleMarkerClick = useCallback((item, type) => {
