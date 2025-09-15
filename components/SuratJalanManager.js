@@ -510,40 +510,30 @@ export default function SuratJalanManager({ onTrackDelivery }) {
         </Dialog>
       </div>
 
-      {/* Surat Jalan List - Enhanced Beautiful Card Design */}
-      <div className="space-y-8">
+      {/* Surat Jalan List - Professional Card Design Inspired by Dashboard */}
+      <div className="space-y-6">
         {currentItems.map((sj) => {
           const statusBadge = getStatusBadge(sj.status);
           return (
             <motion.div
               key={sj.id}
-              whileHover={{ scale: 1.008, y: -4 }}
-              className="cursor-pointer group"
+              whileHover={{ scale: 1.02 }}
+              className="cursor-pointer"
             >
-              <Card className="relative bg-gradient-to-br from-white via-slate-50/80 to-blue-50/60 backdrop-blur-sm border border-white/60 shadow-2xl hover:shadow-3xl transition-all duration-700 overflow-hidden rounded-3xl">
-                {/* Gradient Border Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-blue-500 to-indigo-600 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="absolute inset-[2px] bg-gradient-to-br from-white via-slate-50/80 to-blue-50/60 rounded-3xl"></div>
-                
-                {/* Top Gradient Bar */}
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 via-blue-500 to-indigo-600 rounded-t-3xl"></div>
-                
-                <CardContent className="relative p-10">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                     
-                    {/* Left Section - Document Info with Enhanced Icon */}
-                    <div className="lg:col-span-3 space-y-6">
-                      <div className="flex items-start space-x-5">
-                        <div className="relative">
-                          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-green-500 rounded-3xl blur opacity-75"></div>
-                          <div className="relative p-4 rounded-3xl bg-gradient-to-br from-emerald-500 to-green-600 shadow-2xl">
-                            <FileText className="w-8 h-8 text-white" />
-                          </div>
+                    {/* Left Section - Document Info with Professional Icon */}
+                    <div className="lg:col-span-3 space-y-4">
+                      <div className="flex items-start space-x-4">
+                        <div className="p-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 shadow-lg">
+                          <FileText className="w-6 h-6 text-white" />
                         </div>
-                        <div className="flex-1 space-y-2">
-                          <CardTitle className="text-2xl font-bold text-gray-900 tracking-tight">{sj.number}</CardTitle>
-                          <CardDescription className="text-gray-600 flex items-center text-base">
-                            <Calendar className="w-5 h-5 mr-3" />
+                        <div className="flex-1">
+                          <CardTitle className="text-lg font-bold text-gray-900 mb-1">{sj.number}</CardTitle>
+                          <CardDescription className="text-gray-600 flex items-center text-sm">
+                            <Calendar className="w-4 h-4 mr-2" />
                             {new Date(sj.date).toLocaleDateString('id-ID', { 
                               weekday: 'long', 
                               year: 'numeric', 
@@ -555,133 +545,115 @@ export default function SuratJalanManager({ onTrackDelivery }) {
                       </div>
                       
                       <div className="flex justify-start">
-                        <div className="relative">
-                          <Badge 
-                            variant={statusBadge.variant} 
-                            className={`relative ${statusBadge.color} text-white px-6 py-3 text-base font-semibold shadow-2xl rounded-2xl border-0`}
-                          >
-                            <div className="absolute inset-0 bg-white/20 rounded-2xl"></div>
-                            <span className="relative z-10">{statusBadge.text}</span>
-                          </Badge>
+                        <Badge 
+                          variant={statusBadge.variant} 
+                          className={`${statusBadge.color} text-white px-3 py-1 text-sm font-medium shadow-lg`}
+                        >
+                          {statusBadge.text}
+                        </Badge>
+                      </div>
+                    </div>
+
+                    {/* Driver & Vehicle Section - Consistent with Dashboard Style */}
+                    <div className="lg:col-span-2 space-y-3">
+                      <h4 className="text-sm font-medium text-gray-700">Pengemudi & Kendaraan</h4>
+                      <div className="space-y-2">
+                        <div className="flex items-center text-gray-600">
+                          <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 mr-3">
+                            <User className="w-4 h-4 text-white" />
+                          </div>
+                          <span className="font-medium text-sm">{sj.driver}</span>
+                        </div>
+                        <div className="flex items-center text-gray-600">
+                          <div className="p-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 mr-3">
+                            <Truck className="w-4 h-4 text-white" />
+                          </div>
+                          <span className="font-medium text-sm">{sj.vehicle}</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Driver & Vehicle Section - Enhanced */}
-                    <div className="lg:col-span-2 space-y-5">
-                      <h4 className="text-sm font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200 pb-2">Pengemudi & Kendaraan</h4>
-                      <div className="space-y-4">
-                        <div className="flex items-center text-gray-700 group/item">
-                          <div className="relative mr-4">
-                            <div className="absolute inset-0 bg-blue-200 rounded-2xl blur opacity-50 group-hover/item:opacity-100 transition-opacity"></div>
-                            <div className="relative p-3 rounded-2xl bg-gradient-to-br from-blue-100 to-blue-200 shadow-lg">
-                              <User className="w-5 h-5 text-blue-700" />
-                            </div>
+                    {/* Route & Volume Section - Clean Design */}
+                    <div className="lg:col-span-3 space-y-3">
+                      <h4 className="text-sm font-medium text-gray-700">Informasi Pengiriman</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center text-gray-600">
+                          <div className="p-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 mr-3">
+                            <Route className="w-4 h-4 text-white" />
                           </div>
-                          <span className="font-semibold text-lg">{sj.driver}</span>
+                          <span className="font-medium text-sm">{sj.route}</span>
                         </div>
-                        <div className="flex items-center text-gray-700 group/item">
-                          <div className="relative mr-4">
-                            <div className="absolute inset-0 bg-purple-200 rounded-2xl blur opacity-50 group-hover/item:opacity-100 transition-opacity"></div>
-                            <div className="relative p-3 rounded-2xl bg-gradient-to-br from-purple-100 to-purple-200 shadow-lg">
-                              <Truck className="w-5 h-5 text-purple-700" />
-                            </div>
-                          </div>
-                          <span className="font-semibold text-lg">{sj.vehicle}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Route & Volume Section - Enhanced */}
-                    <div className="lg:col-span-3 space-y-5">
-                      <h4 className="text-sm font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200 pb-2">Informasi Pengiriman</h4>
-                      <div className="space-y-5">
-                        <div className="flex items-center text-gray-700 group/item">
-                          <div className="relative mr-4">
-                            <div className="absolute inset-0 bg-green-200 rounded-2xl blur opacity-50 group-hover/item:opacity-100 transition-opacity"></div>
-                            <div className="relative p-3 rounded-2xl bg-gradient-to-br from-green-100 to-green-200 shadow-lg">
-                              <Route className="w-5 h-5 text-green-700" />
-                            </div>
-                          </div>
-                          <span className="font-semibold text-lg">{sj.route}</span>
-                        </div>
-                        <div className="flex items-center text-gray-700 group/item">
-                          <div className="relative mr-4">
-                            <div className="absolute inset-0 bg-orange-200 rounded-2xl blur opacity-50 group-hover/item:opacity-100 transition-opacity"></div>
-                            <div className="relative p-3 rounded-2xl bg-gradient-to-br from-orange-100 to-orange-200 shadow-lg">
-                              <Package className="w-5 h-5 text-orange-700" />
-                            </div>
+                        <div className="flex items-center text-gray-600">
+                          <div className="p-2 rounded-lg bg-gradient-to-r from-orange-500 to-red-600 mr-3">
+                            <Package className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex flex-col">
-                            <span className="font-bold text-2xl text-gray-900">{sj.totalVolume.toLocaleString()} L</span>
-                            <span className="text-sm text-gray-600 font-medium">Total Volume</span>
+                            <span className="font-bold text-lg text-gray-900">{sj.totalVolume.toLocaleString()} L</span>
+                            <span className="text-xs text-gray-500">Total Volume</span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Destinations Section - Enhanced */}
-                    <div className="lg:col-span-2 space-y-5">
-                      <h4 className="text-sm font-bold text-gray-800 uppercase tracking-wider border-b border-gray-200 pb-2">
+                    {/* Destinations Section - Matching Dashboard Card Style */}
+                    <div className="lg:col-span-2 space-y-3">
+                      <h4 className="text-sm font-medium text-gray-700">
                         Destinasi ({sj.destinations.length})
                       </h4>
-                      <div className="space-y-3 max-h-32 overflow-y-auto custom-scrollbar">
+                      <div className="space-y-2 max-h-24 overflow-y-auto">
                         {sj.destinations.map((dest, index) => (
-                          <div key={index} className="group/dest p-4 rounded-2xl bg-gradient-to-r from-white/80 to-blue-50/80 border border-white/40 shadow-lg hover:shadow-xl transition-all duration-300">
+                          <motion.div
+                            key={index}
+                            whileHover={{ scale: 1.02 }}
+                            className="p-3 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-lg"
+                          >
                             <div className="flex items-center justify-between">
                               <div className="flex items-center flex-1">
-                                <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 mr-3 flex-shrink-0 shadow-lg"></div>
-                                <span className="text-sm font-semibold text-gray-800 line-clamp-1 flex-1">
+                                <div className="w-2 h-2 rounded-full bg-blue-500 mr-2 flex-shrink-0"></div>
+                                <span className="text-xs font-medium text-gray-700 line-clamp-1 flex-1">
                                   {dest.spbe}
                                 </span>
                               </div>
-                              <div className="flex items-center space-x-3 ml-3">
-                                <span className="text-sm font-bold text-gray-900 bg-white/60 px-3 py-1 rounded-xl shadow-sm">
-                                  {dest.volume.toLocaleString()}L
-                                </span>
+                              <div className="flex items-center space-x-2 ml-2">
+                                <span className="text-xs font-bold text-gray-900">{dest.volume.toLocaleString()}L</span>
                                 {dest.delivered ? (
-                                  <div className="p-1 rounded-full bg-green-100">
-                                    <CheckCircle2 className="w-5 h-5 text-green-600" />
-                                  </div>
+                                  <CheckCircle2 className="w-4 h-4 text-green-500" />
                                 ) : (
-                                  <div className="p-1 rounded-full bg-amber-100">
-                                    <Clock className="w-5 h-5 text-amber-600" />
-                                  </div>
+                                  <Clock className="w-4 h-4 text-amber-500" />
                                 )}
                               </div>
                             </div>
-                          </div>
+                          </motion.div>
                         ))}
                       </div>
                     </div>
 
-                    {/* Actions Section - Enhanced */}
-                    <div className="lg:col-span-2 flex flex-col space-y-4">
+                    {/* Actions Section - Professional Button Style */}
+                    <div className="lg:col-span-2 flex flex-col space-y-3">
                       <Button 
-                        className="w-full relative overflow-hidden bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 hover:from-blue-600 hover:via-blue-700 hover:to-indigo-700 text-white shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-400 py-4 font-bold text-base rounded-2xl border-0"
+                        className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 py-2 font-medium"
                         onClick={() => handleTrackDelivery(sj)}
                       >
-                        <div className="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-                        <Navigation className="w-6 h-6 mr-3 relative z-10" />
-                        <span className="relative z-10">Lacak Pengiriman</span>
+                        <Navigation className="w-4 h-4 mr-2" />
+                        Lacak Pengiriman
                       </Button>
                       
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-2 gap-2">
                         <Button 
                           variant="outline"
                           size="sm"
-                          className="relative overflow-hidden bg-white/80 text-gray-700 border-2 border-blue-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-400 hover:text-blue-800 transform hover:scale-110 transition-all duration-300 py-3 font-semibold rounded-xl shadow-lg hover:shadow-xl"
+                          className="text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 hover:text-blue-700 transform hover:scale-105 transition-all duration-200"
                           onClick={() => setSelectedSJ(sj)}
                         >
-                          <Eye className="w-4 h-4 mr-2" />
+                          <Eye className="w-4 h-4 mr-1" />
                           Detail
                         </Button>
                         <Button 
                           variant="outline"
                           size="sm"
-                          className="relative overflow-hidden bg-white/80 text-gray-700 border-2 border-green-200 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:border-green-400 hover:text-green-800 transform hover:scale-110 transition-all duration-300 py-3 font-semibold rounded-xl shadow-lg hover:shadow-xl"
+                          className="text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:border-green-300 hover:text-green-700 transform hover:scale-105 transition-all duration-200"
                         >
-                          <Download className="w-4 h-4 mr-2" />
+                          <Download className="w-4 h-4 mr-1" />
                           PDF
                         </Button>
                       </div>
