@@ -63,8 +63,8 @@ const stakeholderConfig = {
 };
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('dashboard'); // Auto-login for demo
-  const [userRole, setUserRole] = useState('pertamina'); // Auto-login as Pertamina
+  const [currentView, setCurrentView] = useState('login');
+  const [userRole, setUserRole] = useState('');
   const [loginData, setLoginData] = useState({
     username: '',
     password: '',
