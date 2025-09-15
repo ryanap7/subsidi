@@ -77,76 +77,84 @@ export default function SupplyChainMetrics() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
       >
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">On-Time Delivery</CardTitle>
-            <Target className="h-4 w-4 text-green-400" />
+            <CardTitle className="text-sm font-medium text-gray-700">Ketepatan Pengiriman</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-r from-emerald-500 to-green-600">
+              <Target className="h-4 w-4 text-white" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">
+            <div className="text-2xl font-bold text-gray-900">
               {animatedValues.onTimeDelivery?.toFixed(1) || mockMetrics.onTimeDelivery}%
             </div>
             <div className="flex items-center space-x-1 text-xs">
-              <TrendingUp className="h-3 w-3 text-green-400" />
-              <span className="text-green-400">+2.1% from last month</span>
+              <TrendingUp className="h-3 w-3 text-green-600" />
+              <span className="text-green-600">+2.1% dari bulan lalu</span>
             </div>
             <Progress value={animatedValues.onTimeDelivery || mockMetrics.onTimeDelivery} className="mt-2 h-2" />
           </CardContent>
         </Card>
 
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Avg Delivery Time</CardTitle>
-            <Clock className="h-4 w-4 text-blue-400" />
+            <CardTitle className="text-sm font-medium text-gray-700">Rata-rata Waktu Pengiriman</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600">
+              <Clock className="h-4 w-4 text-white" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">
+            <div className="text-2xl font-bold text-gray-900">
               {animatedValues.avgDeliveryTime?.toFixed(1) || mockMetrics.averageDeliveryTime}h
             </div>
             <div className="flex items-center space-x-1 text-xs">
-              <TrendingDown className="h-3 w-3 text-green-400" />
-              <span className="text-green-400">-0.3h faster</span>
+              <TrendingDown className="h-3 w-3 text-green-600" />
+              <span className="text-green-600">-0.3h lebih cepat</span>
             </div>
-            <p className="text-xs text-blue-200 mt-1">Target: 4.0h</p>
+            <p className="text-xs text-gray-500 mt-1">Target: 4.0h</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Fleet Utilization</CardTitle>
-            <Truck className="h-4 w-4 text-purple-400" />
+            <CardTitle className="text-sm font-medium text-gray-700">Utilisasi Armada</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600">
+              <Truck className="h-4 w-4 text-white" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">
+            <div className="text-2xl font-bold text-gray-900">
               {animatedValues.fleetUtilization?.toFixed(0) || mockMetrics.fleetUtilization}%
             </div>
             <div className="flex items-center space-x-1 text-xs">
-              <TrendingUp className="h-3 w-3 text-green-400" />
-              <span className="text-green-400">+5% efficiency</span>
+              <TrendingUp className="h-3 w-3 text-green-600" />
+              <span className="text-green-600">+5% efisiensi</span>
             </div>
             <Progress value={animatedValues.fleetUtilization || mockMetrics.fleetUtilization} className="mt-2 h-2" />
           </CardContent>
         </Card>
 
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Customer Satisfaction</CardTitle>
-            <Users className="h-4 w-4 text-yellow-400" />
+            <CardTitle className="text-sm font-medium text-gray-700">Kepuasan Pelanggan</CardTitle>
+            <div className="p-2 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-600">
+              <Users className="h-4 w-4 text-white" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">{mockMetrics.customerSatisfaction}/5</div>
+            <div className="text-2xl font-bold text-gray-900">{mockMetrics.customerSatisfaction}/5</div>
             <div className="flex items-center space-x-1 text-xs">
-              <TrendingUp className="h-3 w-3 text-green-400" />
-              <span className="text-green-400">+0.2 from last month</span>
+              <TrendingUp className="h-3 w-3 text-green-600" />
+              <span className="text-green-600">+0.2 dari bulan lalu</span>
             </div>
             <div className="flex space-x-1 mt-2">
               {[...Array(5)].map((_, i) => (
                 <div
                   key={i}
                   className={`w-2 h-2 rounded-full ${
-                    i < Math.floor(mockMetrics.customerSatisfaction) ? 'bg-yellow-400' : 'bg-gray-600'
+                    i < Math.floor(mockMetrics.customerSatisfaction) ? 'bg-yellow-400' : 'bg-gray-300'
                   }`}
                 />
               ))}
@@ -162,14 +170,14 @@ export default function SupplyChainMetrics() {
         transition={{ delay: 0.2 }}
         className="grid grid-cols-1 lg:grid-cols-2 gap-6"
       >
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-white flex items-center">
-              <BarChart3 className="w-5 h-5 mr-2" />
-              SPBE Performance Ranking
+            <CardTitle className="text-gray-900 flex items-center text-xl">
+              <BarChart3 className="w-6 h-6 mr-3" />
+              Peringkat Kinerja SPBE
             </CardTitle>
-            <CardDescription className="text-blue-200">
-              Ranking berdasarkan efisiensi operasional dan delivery performance
+            <CardDescription className="text-gray-600">
+              Ranking berdasarkan efisiensi operasional dan performa pengiriman
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -177,34 +185,35 @@ export default function SupplyChainMetrics() {
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.02 }}
-                className="p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+                className="p-4 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transition-all duration-300 cursor-pointer"
               >
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex items-center space-x-3">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-bold">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-sm font-bold">
                       {index + 1}
                     </div>
                     <div>
-                      <h4 className="text-sm font-medium text-white">{spbe.name}</h4>
-                      <p className="text-xs text-blue-200">{spbe.deliveries} deliveries</p>
+                      <h4 className="text-sm font-medium text-gray-900">{spbe.name}</h4>
+                      <p className="text-xs text-gray-600">{spbe.deliveries} pengiriman</p>
                     </div>
                   </div>
-                  <Badge variant={getRatingBadge(spbe.rating)} className="text-xs">
-                    {spbe.rating.replace('-', ' ')}
+                  <Badge variant={getRatingBadge(spbe.rating)} className="text-xs shadow-sm">
+                    {spbe.rating === 'excellent' ? 'Sangat Baik' : 
+                     spbe.rating === 'good' ? 'Baik' : 'Perlu Perbaikan'}
                   </Badge>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <p className="text-blue-200">On-time Rate</p>
+                    <p className="text-gray-600">Tingkat Ketepatan</p>
                     <div className="flex items-center space-x-2">
-                      <span className="text-white font-medium">{spbe.onTime}%</span>
+                      <span className="font-medium text-gray-900">{spbe.onTime}%</span>
                       <Progress value={spbe.onTime} className="flex-1 h-1" />
                     </div>
                   </div>
                   <div>
-                    <p className="text-blue-200">Avg Time</p>
-                    <p className="text-white font-medium">{spbe.avgTime}h</p>
+                    <p className="text-gray-600">Rata-rata Waktu</p>
+                    <p className="font-medium text-gray-900">{spbe.avgTime}h</p>
                   </div>
                 </div>
               </motion.div>
@@ -213,13 +222,13 @@ export default function SupplyChainMetrics() {
         </Card>
 
         {/* Inventory Turnover Analysis */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-white flex items-center">
-              <Package className="w-5 h-5 mr-2" />
-              Inventory Turnover Analysis
+            <CardTitle className="text-gray-900 flex items-center text-xl">
+              <Package className="w-6 h-6 mr-3" />
+              Analisis Perputaran Inventori
             </CardTitle>
-            <CardDescription className="text-blue-200">
+            <CardDescription className="text-gray-600">
               Analisis perputaran stok per lokasi SPBE
             </CardDescription>
           </CardHeader>
@@ -228,17 +237,17 @@ export default function SupplyChainMetrics() {
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.02 }}
-                className="p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+                className="p-4 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transition-all duration-300 cursor-pointer"
               >
                 <div className="flex justify-between items-center mb-2">
-                  <h4 className="text-sm font-medium text-white">{item.location}</h4>
+                  <h4 className="text-sm font-medium text-gray-900">{item.location}</h4>
                   <div className="flex items-center space-x-1">
                     {item.trend === 'up' ? (
-                      <TrendingUp className="w-3 h-3 text-green-400" />
+                      <TrendingUp className="w-3 h-3 text-green-600" />
                     ) : (
-                      <TrendingDown className="w-3 h-3 text-red-400" />
+                      <TrendingDown className="w-3 h-3 text-red-600" />
                     )}
-                    <span className={`text-xs ${item.trend === 'up' ? 'text-green-400' : 'text-red-400'}`}>
+                    <span className={`text-xs ${item.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
                       {item.change}
                     </span>
                   </div>
@@ -246,14 +255,14 @@ export default function SupplyChainMetrics() {
                 
                 <div className="flex justify-between items-center">
                   <div>
-                    <p className="text-xs text-blue-200">Turnover Rate</p>
-                    <p className="text-lg font-bold text-white">{item.turnover}x</p>
+                    <p className="text-xs text-gray-600">Tingkat Perputaran</p>
+                    <p className="text-lg font-bold text-gray-900">{item.turnover}x</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-blue-200">Efficiency</p>
+                    <p className="text-xs text-gray-600">Efisiensi</p>
                     <div className="flex items-center space-x-2">
                       <Progress value={(item.turnover / 15) * 100} className="w-16 h-1" />
-                      <span className="text-xs text-white">
+                      <span className="text-xs font-medium text-gray-900">
                         {((item.turnover / 15) * 100).toFixed(0)}%
                       </span>
                     </div>
@@ -272,27 +281,30 @@ export default function SupplyChainMetrics() {
         transition={{ delay: 0.3 }}
         className="flex justify-between items-center"
       >
-        <div className="flex space-x-2">
+        <div className="flex space-x-3">
           {['7d', '30d', '90d'].map((period) => (
             <Button
               key={period}
               variant={selectedPeriod === period ? 'default' : 'outline'}
               size="sm"
               onClick={() => setSelectedPeriod(period)}
-              className="text-white border-white/20"
+              className={selectedPeriod === period ? 
+                'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg' : 
+                'text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transform hover:scale-105 transition-all duration-200'
+              }
             >
               {period === '7d' ? '7 Hari' : period === '30d' ? '30 Hari' : '90 Hari'}
             </Button>
           ))}
         </div>
         
-        <div className="flex space-x-2">
-          <Button variant="outline" size="sm" className="text-white border-white/20">
+        <div className="flex space-x-3">
+          <Button className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
             <BarChart3 className="w-4 h-4 mr-2" />
-            Detail Analytics
+            Analitik Detail
           </Button>
-          <Button variant="outline" size="sm" className="text-white border-white/20">
-            Export Report
+          <Button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+            Ekspor Laporan
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
