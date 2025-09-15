@@ -504,85 +504,109 @@ export default function SuratJalanManager({ onTrackDelivery }) {
         </Dialog>
       </div>
 
-      {/* Surat Jalan List - Fixed card heights */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        {suratJalanList.map((sj) => {
+      {/* Surat Jalan List - 1 card per line with pagination */}
+      <div className="space-y-4">
+        {currentItems.map((sj) => {
           const statusBadge = getStatusBadge(sj.status);
           return (
             <motion.div
               key={sj.id}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.01 }}
               className="cursor-pointer"
             >
-              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 h-80">
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <CardTitle className="text-lg text-gray-900 line-clamp-1">{sj.number}</CardTitle>
-                      <CardDescription className="text-gray-600">
-                        {new Date(sj.date).toLocaleDateString('id-ID')}
-                      </CardDescription>
-                    </div>
-                    <Badge variant={statusBadge.variant} className={`${statusBadge.color} text-white flex-shrink-0 ml-2`}>
-                      {statusBadge.text}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                
-                <CardContent className="space-y-4 flex-1 flex flex-col">
-                  <div className="space-y-2 flex-1">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <User className="w-4 h-4 mr-2 flex-shrink-0" />
-                      <span className="line-clamp-1">{sj.driver} - {sj.vehicle}</span>
-                    </div>
-                    
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Route className="w-4 h-4 mr-2 flex-shrink-0" />
-                      <span className="line-clamp-1">{sj.route}</span>
-                    </div>
-                    
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Package className="w-4 h-4 mr-2 flex-shrink-0" />
-                      <span>{sj.totalVolume.toLocaleString()} L</span>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium text-gray-700">Destinasi ({sj.destinations.length}):</p>
-                    <div className="space-y-1 max-h-20 overflow-y-auto">
-                      {sj.destinations.map((dest, index) => (
-                        <div key={index} className="flex justify-between items-center text-xs">
-                          <span className="text-gray-600 line-clamp-1 flex-1">{dest.spbe}</span>
-                          <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
-                            <span className="font-medium text-gray-900">{dest.volume.toLocaleString()}L</span>
-                            {dest.delivered ? (
-                              <CheckCircle2 className="w-3 h-3 text-green-500" />
-                            ) : (
-                              <Clock className="w-3 h-3 text-yellow-500" />
-                            )}
-                          </div>
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    {/* Left Section - Basic Info */}
+                    <div className="lg:col-span-1 space-y-3">
+                      <div className="flex justify-between items-start lg:flex-col lg:items-start lg:space-y-2">
+                        <div>
+                          <CardTitle className="text-xl text-gray-900">{sj.number}</CardTitle>
+                          <CardDescription className="text-gray-600">
+                            {new Date(sj.date).toLocaleDateString('id-ID')}
+                          </CardDescription>
                         </div>
-                      ))}
+                        <Badge variant={statusBadge.variant} className={`${statusBadge.color} text-white`}>
+                          {statusBadge.text}
+                        </Badge>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <div className="flex items-center text-sm text-gray-600">
+                          <User className="w-4 h-4 mr-2 flex-shrink-0" />
+                          <span>{sj.driver}</span>
+                        </div>
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Truck className="w-4 h-4 mr-2 flex-shrink-0" />
+                          <span>{sj.vehicle}</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex space-x-2 pt-3 border-t">
-                    <Button 
-                      size="sm" 
-                      className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
-                      onClick={() => handleTrackDelivery(sj)}
-                    >
-                      <Navigation className="w-3 h-3 mr-1" />
-                      Lacak
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
-                      onClick={() => setSelectedSJ(sj)}
-                    >
-                      <Eye className="w-3 h-3 mr-1" />
-                      Detail
-                    </Button>
+
+                    {/* Middle Section - Route & Volume */}
+                    <div className="lg:col-span-1 space-y-3">
+                      <div>
+                        <h4 className="text-sm font-medium text-gray-700 mb-2">Informasi Rute</h4>
+                        <div className="flex items-center text-sm text-gray-600 mb-2">
+                          <Route className="w-4 h-4 mr-2 flex-shrink-0" />
+                          <span>{sj.route}</span>
+                        </div>
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Package className="w-4 h-4 mr-2 flex-shrink-0" />
+                          <span>{sj.totalVolume.toLocaleString()} L</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right Section - Destinations */}
+                    <div className="lg:col-span-1 space-y-3">
+                      <div>
+                        <h4 className="text-sm font-medium text-gray-700 mb-2">
+                          Destinasi ({sj.destinations.length})
+                        </h4>
+                        <div className="space-y-1 max-h-20 overflow-y-auto">
+                          {sj.destinations.map((dest, index) => (
+                            <div key={index} className="flex justify-between items-center text-xs">
+                              <span className="text-gray-600 line-clamp-1 flex-1">{dest.spbe}</span>
+                              <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
+                                <span className="font-medium text-gray-900">{dest.volume.toLocaleString()}L</span>
+                                {dest.delivered ? (
+                                  <CheckCircle2 className="w-3 h-3 text-green-500" />
+                                ) : (
+                                  <Clock className="w-3 h-3 text-yellow-500" />
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Actions Section */}
+                    <div className="lg:col-span-1 flex flex-col justify-center space-y-3">
+                      <Button 
+                        className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                        onClick={() => handleTrackDelivery(sj)}
+                      >
+                        <Navigation className="w-4 h-4 mr-2" />
+                        Lacak Pengiriman
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        className="w-full text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transform hover:scale-105 transition-all duration-200"
+                        onClick={() => setSelectedSJ(sj)}
+                      >
+                        <Eye className="w-4 h-4 mr-2" />
+                        Lihat Detail
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        className="w-full text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:border-green-300 transform hover:scale-105 transition-all duration-200"
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Unduh PDF
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -590,6 +614,56 @@ export default function SuratJalanManager({ onTrackDelivery }) {
           );
         })}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2 text-sm text-gray-600">
+            <span>
+              Menampilkan {startIndex + 1}-{Math.min(endIndex, suratJalanList.length)} dari {suratJalanList.length} surat jalan
+            </span>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={goToPreviousPage}
+              disabled={currentPage === 1}
+              className="text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Sebelumnya
+            </Button>
+            
+            <div className="flex items-center space-x-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <Button
+                  key={page}
+                  variant={currentPage === page ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => goToPage(page)}
+                  className={currentPage === page ? 
+                    'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg' : 
+                    'text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300'
+                  }
+                >
+                  {page}
+                </Button>
+              ))}
+            </div>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={goToNextPage}
+              disabled={currentPage === totalPages}
+              className="text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Selanjutnya
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Detail Modal */}
       <Dialog open={!!selectedSJ} onOpenChange={() => setSelectedSJ(null)}>
