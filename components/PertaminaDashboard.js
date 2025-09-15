@@ -294,7 +294,7 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                         key={spbe.id}
                         whileHover={{ scale: 1.02 }}
                         className="p-6 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-lg h-48 flex flex-col justify-between"
-                        onClick={() => setSelectedSPBE(spbe)}
+                        onClick={() => handleSPBECardClick(spbe)}
                       >
                         <div className="flex justify-between items-start mb-4">
                           <div className="flex-1">
