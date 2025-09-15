@@ -86,6 +86,55 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="relative text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 hover:border-yellow-300 transform hover:scale-105 transition-all duration-200"
+                  >
+                    <Bell className="w-4 h-4" />
+                    <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center animate-pulse">
+                      3
+                    </span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="bg-white border-gray-200 text-gray-900 max-w-4xl max-h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center text-xl">
+                      <Bell className="w-6 h-6 mr-3 text-yellow-500" />
+                      Sistem Alert & Notifikasi
+                    </DialogTitle>
+                    <DialogDescription className="text-gray-600">
+                      Pemantauan real-time alert dan notifikasi sistem operasional
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 max-h-96 overflow-y-auto">
+                    {[
+                      { id: 1, type: 'critical', title: 'Stok Kritis - SPBE Medan Barat', message: 'Stok LPG mencapai level kritis (18%). Diperlukan pengiriman segera.', time: '5 menit lalu' },
+                      { id: 2, type: 'warning', title: 'Keterlambatan Pengiriman TRK-003', message: 'Truck TRK-003 mengalami keterlambatan 2 jam dari jadwal.', time: '15 menit lalu' },
+                      { id: 3, type: 'info', title: 'Maintenance Terjadwal SPBE Bandung', message: 'SPBE Bandung Utara akan menjalani maintenance sistem.', time: '2 jam lalu' }
+                    ].map((alert) => (
+                      <div key={alert.id} className={`p-4 rounded-lg border-l-4 ${
+                        alert.type === 'critical' ? 'border-red-500 bg-red-50' :
+                        alert.type === 'warning' ? 'border-yellow-500 bg-yellow-50' : 'border-blue-500 bg-blue-50'
+                      }`}>
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-medium text-gray-900">{alert.title}</h4>
+                          <Badge variant={
+                            alert.type === 'critical' ? 'destructive' :
+                            alert.type === 'warning' ? 'secondary' : 'outline'
+                          }>
+                            {alert.type === 'critical' ? 'Kritis' : alert.type === 'warning' ? 'Peringatan' : 'Info'}
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-2">{alert.message}</p>
+                        <p className="text-xs text-gray-500">{alert.time}</p>
+                      </div>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
               <Button
                 onClick={handleRefresh}
                 variant="outline"
