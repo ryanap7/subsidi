@@ -144,10 +144,7 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], view 
 
   return (
     <div className="w-full h-full relative">
-      <LoadScript
-        googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-        libraries={['geometry', 'drawing', 'places']}
-      >
+      {isLoaded ? (
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={defaultCenter}
