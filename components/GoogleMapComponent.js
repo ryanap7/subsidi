@@ -56,7 +56,7 @@ const mapOptions = {
   ]
 };
 
-export default function GoogleMapComponent({ spbeData = [], vehicles = [], view = 'distribution' }) {
+export default function GoogleMapComponent({ spbeData = [], vehicles = [], mapView = 'distribution' }) {
   const mapRef = useRef();
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
