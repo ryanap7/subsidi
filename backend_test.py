@@ -9,8 +9,8 @@ import json
 import os
 from datetime import datetime
 
-# Get base URL from environment
-BASE_URL = os.getenv('NEXT_PUBLIC_BASE_URL', 'https://subsidy-portal.preview.emergentagent.com')
+# Use localhost for testing since external URL has routing issues
+BASE_URL = "http://localhost:3000"
 API_BASE = f"{BASE_URL}/api"
 
 class LPGSubsidyPortalTester:
