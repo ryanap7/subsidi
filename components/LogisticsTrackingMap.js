@@ -105,6 +105,11 @@ export default function LogisticsTrackingMap() {
   const [selectedDelivery, setSelectedDelivery] = useState(mockTrackingData[0]);
   const [selectedMarker, setSelectedMarker] = useState(null);
 
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    libraries: ['geometry', 'drawing', 'places'],
+  });
+
   const getStationIcon = (station) => {
     const baseIcon = {
       scale: 10,
