@@ -15,10 +15,11 @@ import {
   Activity, Zap, Bell, Eye, Filter, Download, RefreshCw,
   Map, Route, Gauge, Signal, Target, CheckCircle2, FileText, Plus
 } from 'lucide-react';
-import GoogleMapComponent from '@/components/GoogleMapComponent';
-import SupplyChainMetrics from '@/components/SupplyChainMetrics';
-import AlertSystem from '@/components/AlertSystem';
+import GoogleMapComponent from './GoogleMapComponent';
+import SupplyChainMetrics from './SupplyChainMetrics';
+import AlertSystem from './AlertSystem';
 import SuratJalanManager from './SuratJalanManager';
+import LogisticsTrackingMap from './LogisticsTrackingMap';
 
 // Mock data untuk dashboard
 const mockSPBEData = [
@@ -105,26 +106,34 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
 
       <div className="container mx-auto px-4 py-6">
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-white/80 backdrop-blur-lg shadow-lg border-0">
-            <TabsTrigger value="overview" className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200">
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Ringkasan Operasional
+          <TabsList className="grid w-full grid-cols-4 bg-white/90 backdrop-blur-lg shadow-lg border-0 h-14 p-1">
+            <TabsTrigger 
+              value="overview" 
+              className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 rounded-lg h-full flex items-center justify-center space-x-2"
+            >
+              <BarChart3 className="w-4 h-4" />
+              <span>Ringkasan Operasional</span>
             </TabsTrigger>
-            <TabsTrigger value="supply-chain" className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200">
-              <Package className="w-4 h-4 mr-2" />
-              Manajemen Rantai Pasok
+            <TabsTrigger 
+              value="supply-chain" 
+              className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 rounded-lg h-full flex items-center justify-center space-x-2"
+            >
+              <Package className="w-4 h-4" />
+              <span>Manajemen Rantai Pasok</span>
             </TabsTrigger>
-            <TabsTrigger value="logistics" className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200">
-              <FileText className="w-4 h-4 mr-2" />
-              Manajemen Logistik
+            <TabsTrigger 
+              value="logistics" 
+              className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 rounded-lg h-full flex items-center justify-center space-x-2"
+            >
+              <FileText className="w-4 h-4" />
+              <span>Manajemen Logistik</span>
             </TabsTrigger>
-            <TabsTrigger value="command-center" className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200">
-              <Map className="w-4 h-4 mr-2" />
-              Pusat Kendali Distribusi
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200">
-              <TrendingUp className="w-4 h-4 mr-2" />
-              Analitik dan Pelaporan
+            <TabsTrigger 
+              value="command-center" 
+              className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 rounded-lg h-full flex items-center justify-center space-x-2"
+            >
+              <Map className="w-4 h-4" />
+              <span>Pusat Kendali Distribusi</span>
             </TabsTrigger>
           </TabsList>
 
@@ -135,7 +144,7 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
               animate={{ opacity: 1, y: 0 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
             >
-              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] h-32">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-gray-700">Total Kapasitas Nasional</CardTitle>
                   <div className="p-2 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600">
@@ -148,7 +157,7 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] h-32">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-gray-700">Stok Tersedia</CardTitle>
                   <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600">
@@ -161,7 +170,7 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] h-32">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-gray-700">Tingkat Utilisasi</CardTitle>
                   <div className="p-2 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-600">
@@ -174,7 +183,7 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] h-32">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-gray-700">Armada Operasional</CardTitle>
                   <div className="p-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600">
@@ -188,7 +197,7 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
               </Card>
             </motion.div>
 
-            {/* SPBE Status Grid */}
+            {/* SPBE Status Grid - Fixed card heights */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -210,22 +219,22 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                       <motion.div
                         key={spbe.id}
                         whileHover={{ scale: 1.02 }}
-                        className="p-6 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-lg"
+                        className="p-6 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-lg h-48 flex flex-col justify-between"
                         onClick={() => setSelectedSPBE(spbe)}
                       >
                         <div className="flex justify-between items-start mb-4">
-                          <div>
-                            <h3 className="font-semibold text-gray-900 text-lg">{spbe.name}</h3>
-                            <p className="text-sm text-gray-600">{spbe.location}</p>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 text-lg line-clamp-2">{spbe.name}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{spbe.location}</p>
                           </div>
                           <Badge variant={
                             spbe.status === 'critical' ? 'destructive' :
                             spbe.status === 'low' ? 'secondary' : 'default'
-                          } className="shadow-sm">
+                          } className="shadow-sm ml-2 flex-shrink-0">
                             {spbe.status === 'critical' ? 'Kritis' : spbe.status === 'low' ? 'Rendah' : 'Normal'}
                           </Badge>
                         </div>
-                        <div className="space-y-3">
+                        <div className="space-y-3 flex-1">
                           <div className="flex justify-between text-sm">
                             <span className="text-gray-600">Stok Tersedia</span>
                             <span className="font-medium text-gray-900">{spbe.stock.toLocaleString()}L</span>
@@ -248,13 +257,13 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
           <TabsContent value="supply-chain" className="space-y-6">
             <SupplyChainMetrics />
             
-            {/* Logistics Management */}
+            {/* Logistics Management - Fixed card heights */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="grid grid-cols-1 lg:grid-cols-2 gap-6"
             >
-              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg h-96">
                 <CardHeader>
                   <CardTitle className="text-gray-900 flex items-center text-xl">
                     <Truck className="w-6 h-6 mr-3" />
@@ -264,19 +273,19 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                     Pemantauan real-time seluruh aktivitas distribusi
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 h-64 overflow-y-auto">
                   {mockDeliveries.map((delivery) => (
-                    <div key={delivery.id} className="p-4 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transition-all duration-300">
+                    <div key={delivery.id} className="p-4 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transition-all duration-300 min-h-20">
                       <div className="flex justify-between items-start mb-3">
                         <div className="flex-1">
-                          <h4 className="text-sm font-medium text-gray-900">{delivery.route}</h4>
+                          <h4 className="text-sm font-medium text-gray-900 line-clamp-1">{delivery.route}</h4>
                           <p className="text-xs text-gray-600">Pengemudi: {delivery.driver}</p>
                         </div>
                         <Badge variant={
                           delivery.status === 'urgent' ? 'destructive' :
                           delivery.status === 'delivered' ? 'default' :
                           delivery.status === 'in-transit' ? 'secondary' : 'outline'
-                        } className="shadow-sm">
+                        } className="shadow-sm ml-2 flex-shrink-0">
                           {delivery.status === 'urgent' ? 'Mendesak' : 
                            delivery.status === 'delivered' ? 'Selesai' :
                            delivery.status === 'in-transit' ? 'Dalam Perjalanan' : 'Terjadwal'}
@@ -294,45 +303,30 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                 </CardContent>
               </Card>
 
-              <AlertSystem />
+              <div className="h-96">
+                <AlertSystem />
+              </div>
             </motion.div>
           </TabsContent>
 
-          {/* Logistics Tab - New Surat Jalan Feature */}
+          {/* Logistics Tab - Enhanced with tracking map */}
           <TabsContent value="logistics" className="space-y-6">
-            <SuratJalanManager />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div>
+                <SuratJalanManager />
+              </div>
+              <div>
+                <LogisticsTrackingMap />
+              </div>
+            </div>
           </TabsContent>
 
-          {/* Command Center Tab */}
+          {/* Command Center Tab - SPBE only markers */}
           <TabsContent value="command-center" className="space-y-6">
             <div className="flex justify-between items-center">
               <div>
                 <h2 className="text-3xl font-bold text-gray-900">Pusat Kendali Distribusi</h2>
                 <p className="text-gray-600">Monitoring dan kontrol real-time operasional distribusi LPG nasional</p>
-              </div>
-              <div className="flex space-x-3">
-                <Button
-                  variant={mapView === 'distribution' ? 'default' : 'outline'}
-                  onClick={() => setMapView('distribution')}
-                  className={mapView === 'distribution' ? 
-                    'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg' : 
-                    'text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50'
-                  }
-                >
-                  <MapPin className="w-4 h-4 mr-2" />
-                  Peta Distribusi
-                </Button>
-                <Button
-                  variant={mapView === 'supply-chain' ? 'default' : 'outline'}
-                  onClick={() => setMapView('supply-chain')}
-                  className={mapView === 'supply-chain' ? 
-                    'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg' : 
-                    'text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50'
-                  }
-                >
-                  <Route className="w-4 h-4 mr-2" />
-                  Rantai Pasok
-                </Button>
               </div>
             </div>
 
@@ -347,8 +341,8 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                   <CardContent className="p-0 h-full">
                     <GoogleMapComponent 
                       spbeData={mockSPBEData}
-                      vehicles={mockVehicles}
-                      view={mapView}
+                      vehicles={[]} // No vehicles in command center
+                      view="spbe-only"
                     />
                   </CardContent>
                 </Card>
@@ -369,17 +363,17 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Armada Aktif</span>
+                      <span className="text-sm text-gray-600">Status Normal</span>
                       <div className="flex items-center">
-                        <Activity className="w-4 h-4 text-blue-500 mr-2" />
-                        <span className="text-sm font-medium text-gray-900">{stats.activeVehicles}/4</span>
+                        <CheckCircle2 className="w-4 h-4 text-green-500 mr-2" />
+                        <span className="text-sm font-medium text-gray-900">{mockSPBEData.filter(s => s.status === 'normal').length}</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Alert Aktif</span>
+                      <span className="text-sm text-gray-600">Perlu Perhatian</span>
                       <div className="flex items-center">
-                        <Bell className="w-4 h-4 text-yellow-500 mr-2" />
-                        <span className="text-sm font-medium text-gray-900">3</span>
+                        <AlertTriangle className="w-4 h-4 text-yellow-500 mr-2" />
+                        <span className="text-sm font-medium text-gray-900">{mockSPBEData.filter(s => s.status === 'low' || s.status === 'critical').length}</span>
                       </div>
                     </div>
                   </CardContent>
@@ -392,7 +386,7 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                   <CardContent className="space-y-3">
                     <Button size="sm" className="w-full justify-start text-sm bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
                       <Eye className="w-4 h-4 mr-2" />
-                      Lihat Semua Rute
+                      Lihat Detail SPBE
                     </Button>
                     <Button size="sm" className="w-full justify-start text-sm bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
                       <Filter className="w-4 h-4 mr-2" />
@@ -404,80 +398,31 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                     </Button>
                   </CardContent>
                 </Card>
+
+                <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="text-gray-900 text-lg">Aktivitas Terkini</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {[
+                      { action: 'Stok SPBE Jakarta updated', time: '2 menit lalu', status: 'success' },
+                      { action: 'Alert stok rendah SPBE Surabaya', time: '5 menit lalu', status: 'warning' },
+                      { action: 'SPBE Makassar online', time: '10 menit lalu', status: 'info' }
+                    ].map((activity, index) => (
+                      <div key={index} className="flex items-center space-x-2 text-xs">
+                        <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                          activity.status === 'success' ? 'bg-green-400' :
+                          activity.status === 'warning' ? 'bg-yellow-400' : 'bg-blue-400'
+                        }`} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-gray-900 truncate">{activity.action}</p>
+                          <p className="text-gray-500">{activity.time}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
               </div>
-            </motion.div>
-          </TabsContent>
-
-          {/* Analytics Tab */}
-          <TabsContent value="analytics" className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-            >
-              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-gray-900">Metrik Kinerja Operasional</CardTitle>
-                  <CardDescription className="text-gray-600">
-                    Analisis mendalam kinerja distribusi dan efisiensi operasional
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {[
-                    { metric: 'Akurasi Pengiriman', value: '98.5%', trend: '+2.1%', color: 'text-green-600' },
-                    { metric: 'Waktu Rata-rata Pengiriman', value: '4.2 jam', trend: '-0.3h', color: 'text-green-600' },
-                    { metric: 'Utilisasi Armada', value: '87%', trend: '+5%', color: 'text-green-600' },
-                    { metric: 'Kepuasan Pelanggan', value: '4.7/5', trend: '+0.2', color: 'text-green-600' }
-                  ].map((item, index) => (
-                    <div key={index} className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200">
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">{item.metric}</p>
-                        <p className="text-xl font-bold text-gray-900">{item.value}</p>
-                      </div>
-                      <div className={`text-sm font-medium ${item.color}`}>
-                        {item.trend}
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-gray-900">Analisis Efisiensi Distribusi</CardTitle>
-                  <CardDescription className="text-gray-600">
-                    Evaluasi pola distribusi dan optimalisasi rute operasional
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {[
-                    { route: 'Jakarta - Surabaya', efficiency: 92, cost: 'Rp 2.5M', volume: '45K L' },
-                    { route: 'Jakarta - Bandung', efficiency: 89, cost: 'Rp 1.8M', volume: '32K L' },
-                    { route: 'Surabaya - Malang', efficiency: 95, cost: 'Rp 1.2M', volume: '28K L' },
-                    { route: 'Bandung - Cirebon', efficiency: 87, cost: 'Rp 1.5M', volume: '25K L' }
-                  ].map((route, index) => (
-                    <div key={index} className="p-4 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 space-y-3">
-                      <div className="flex justify-between items-center">
-                        <h4 className="text-sm font-medium text-gray-900">{route.route}</h4>
-                        <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs">
-                          {route.efficiency}% efisien
-                        </Badge>
-                      </div>
-                      <div className="grid grid-cols-2 gap-3 text-xs">
-                        <div>
-                          <p className="text-gray-600">Biaya Operasional</p>
-                          <p className="font-medium text-gray-900">{route.cost}</p>
-                        </div>
-                        <div>
-                          <p className="text-gray-600">Volume Distribusi</p>
-                          <p className="font-medium text-gray-900">{route.volume}</p>
-                        </div>
-                      </div>
-                      <Progress value={route.efficiency} className="h-2" />
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
             </motion.div>
           </TabsContent>
         </Tabs>
