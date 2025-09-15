@@ -49,6 +49,8 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
   const [refreshing, setRefreshing] = useState(false);
   const [mapView, setMapView] = useState('distribution');
   const [trackingData, setTrackingData] = useState(null);
+  const [showSPBEDetail, setShowSPBEDetail] = useState(false);
+  const [selectedSPBEForDetail, setSelectedSPBEForDetail] = useState(null);
 
   const handleRefresh = () => {
     setRefreshing(true);
