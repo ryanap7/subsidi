@@ -195,7 +195,7 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], mapVi
                 setSelectedType(null);
               }}
             >
-              <div className="p-4 min-w-[280px]">
+              <div className="p-4 min-w-[320px]">
                 {selectedType === 'spbe' ? (
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
@@ -204,7 +204,7 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], mapVi
                       </div>
                       <div>
                         <h3 className="font-semibold text-gray-900 text-lg">{selectedMarker.name}</h3>
-                        <p className="text-sm text-gray-600">{selectedMarker.location}</p>
+                        <p className="text-sm text-gray-600">{selectedMarker.location} • {selectedMarker.region}</p>
                       </div>
                     </div>
                     
@@ -231,6 +231,21 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], mapVi
                         </div>
                       </div>
                       
+                      <div className="grid grid-cols-1 gap-3 text-sm bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-lg">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Daily Throughput:</span>
+                          <span className="font-semibold text-gray-900">{selectedMarker.dailyThroughput?.toLocaleString() || '0'} L/hari</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Efisiensi:</span>
+                          <span className="font-semibold text-green-600">
+                            {selectedMarker.dailyThroughput && selectedMarker.capacity ? 
+                              ((selectedMarker.dailyThroughput / selectedMarker.capacity) * 100).toFixed(1)
+                              : '0'}%
+                          </span>
+                        </div>
+                      </div>
+                      
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">Tingkat Pengisian</span>
@@ -251,12 +266,6 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], mapVi
                           ></div>
                         </div>
                       </div>
-                      
-                      <div className="pt-2 border-t border-gray-200">
-                        <p className="text-xs text-gray-500 text-center">
-                          Terakhir diperbarui: {new Date().toLocaleTimeString('id-ID')}
-                        </p>
-                      </div>
                     </div>
                   </div>
                 ) : (
@@ -266,8 +275,8 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], mapVi
                         <Truck className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900 text-lg">{selectedMarker.name}</h3>
-                        <p className="text-sm text-gray-600">ID: {selectedMarker.id}</p>
+                        <h3 className="font-semibold text-gray-900 text-lg">{selectedMarker.id}</h3>
+                        <p className="text-sm text-gray-600">Driver: {selectedMarker.driver}</p>
                       </div>
                     </div>
                     
@@ -275,28 +284,35 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], mapVi
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-gray-600">Status:</span>
                         <Badge variant={
-                          selectedMarker.status === 'active' ? 'default' :
-                          selectedMarker.status === 'maintenance' ? 'secondary' : 'outline'
+                          selectedMarker.status === 'critical-delivery' ? 'destructive' :
+                          selectedMarker.status === 'en-route' ? 'secondary' : 'default'
                         } className="shadow-sm">
-                          {selectedMarker.status === 'active' ? 'Aktif' :
-                           selectedMarker.status === 'maintenance' ? 'Maintenance' : 'Tidak Aktif'}
+                          {selectedMarker.status === 'critical-delivery' ? 'Kritis' : 
+                           selectedMarker.status === 'en-route' ? 'Dalam Perjalanan' :
+                           selectedMarker.status === 'loading' ? 'Loading' : 'Selesai'}
                         </Badge>
                       </div>
                       
-                      <div className="grid grid-cols-1 gap-3 text-sm bg-gradient-to-r from-gray-50 to-blue-50 p-3 rounded-lg">
+                      <div className="grid grid-cols-2 gap-3 text-sm bg-gradient-to-r from-gray-50 to-blue-50 p-3 rounded-lg">
                         <div>
-                          <p className="text-gray-600">Tujuan</p>
-                          <p className="font-semibold text-gray-900">{selectedMarker.destination}</p>
+                          <p className="text-gray-600">Kapasitas</p>
+                          <p className="font-semibold text-gray-900">{selectedMarker.capacity?.toLocaleString()} L</p>
                         </div>
                         <div>
-                          <p className="text-gray-600">Muatan</p>
-                          <p className="font-semibold text-gray-900">{selectedMarker.cargo?.toLocaleString()} L</p>
+                          <p className="text-gray-600">Current Load</p>
+                          <p className="font-semibold text-gray-900">{selectedMarker.currentLoad?.toLocaleString()} L</p>
                         </div>
                       </div>
                       
-                      <div className="flex items-center justify-center space-x-2 text-xs text-gray-500 pt-2 border-t border-gray-200">
-                        <Activity className="w-3 h-3" />
-                        <span>Tracking GPS aktif</span>
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span className="text-sm text-gray-600">Destination:</span>
+                          <span className="text-sm font-medium text-gray-900">{selectedMarker.destination}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-sm text-gray-600">ETA:</span>
+                          <span className="text-sm font-semibold text-blue-600">{selectedMarker.eta}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
