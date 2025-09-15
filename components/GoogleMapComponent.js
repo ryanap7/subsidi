@@ -315,7 +315,7 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], view 
       )}
       
       {/* Map Legend - Only show for SPBE view */}
-      {view === 'spbe-only' && (
+      {view === 'spbe-only' && isLoaded && (
         <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-lg border border-gray-200">
           <h4 className="font-medium text-gray-800 mb-3 text-sm">Status SPBE</h4>
           <div className="space-y-2 text-xs">
