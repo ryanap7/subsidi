@@ -19,10 +19,79 @@ const mockLogisticsData = [
   { id: 'LOG-003', date: '2024-01-13', driver: 'Candra Wijaya', vehicle: 'TRK-003', volume: 4200, status: 'delivered' }
 ];
 
-const mockTransactions = [
-  { id: 'TXN-001', date: '2024-01-15', type: 'Penjualan', amount: 125000000, volume: 5000, customer: 'Agen Jakarta Selatan' },
-  { id: 'TXN-002', date: '2024-01-14', type: 'Penjualan', amount: 87500000, volume: 3500, customer: 'Pangkalan Kemang' },
-  { id: 'TXN-003', date: '2024-01-13', type: 'Penjualan', amount: 105000000, volume: 4200, customer: 'Agen Blok M' }
+const mockAgentTransactions = [
+  { 
+    id: 'TXN-AGT-001', 
+    date: '2024-01-15', 
+    type: 'Penjualan ke Agen', 
+    amount: 125000000, 
+    volume: 5000, 
+    agent: {
+      name: 'Agen Jakarta Selatan - CV Mitra Gas',
+      code: 'AGT-JKT-001',
+      address: 'Jl. Fatmawati No. 45, Jakarta Selatan',
+      phone: '021-7654321',
+      pic: 'Suryanto'
+    },
+    paymentMethod: 'Transfer Bank',
+    paymentStatus: 'Lunas',
+    deliveryStatus: 'Selesai',
+    invoiceNumber: 'INV/2024/001'
+  },
+  { 
+    id: 'TXN-AGT-002', 
+    date: '2024-01-14', 
+    type: 'Penjualan ke Agen', 
+    amount: 87500000, 
+    volume: 3500, 
+    agent: {
+      name: 'Agen Kemang - UD Berkah Gas',
+      code: 'AGT-JKT-002',
+      address: 'Jl. Kemang Raya No. 89, Jakarta Selatan',
+      phone: '021-5556677',
+      pic: 'Dewi Sartika'
+    },
+    paymentMethod: 'Transfer Bank',
+    paymentStatus: 'Pending',
+    deliveryStatus: 'Dalam Perjalanan',
+    invoiceNumber: 'INV/2024/002'
+  },
+  { 
+    id: 'TXN-AGT-003', 
+    date: '2024-01-13', 
+    type: 'Penjualan ke Agen', 
+    amount: 105000000, 
+    volume: 4200, 
+    agent: {
+      name: 'Agen Blok M - PT Gas Mandiri',
+      code: 'AGT-JKT-003',
+      address: 'Jl. Blok M No. 123, Jakarta Selatan',
+      phone: '021-7778899',
+      pic: 'Bambang Wijaya'
+    },
+    paymentMethod: 'Cash',
+    paymentStatus: 'Lunas',
+    deliveryStatus: 'Selesai',
+    invoiceNumber: 'INV/2024/003'
+  },
+  { 
+    id: 'TXN-AGT-004', 
+    date: '2024-01-12', 
+    type: 'Penjualan ke Agen', 
+    amount: 200000000, 
+    volume: 8000, 
+    agent: {
+      name: 'Agen Bintaro - CV Elpiji Sejahtera',
+      code: 'AGT-JKT-004',
+      address: 'Jl. Bintaro Utama No. 67, Tangerang Selatan',
+      phone: '021-1122334',
+      pic: 'Sari Indah'
+    },
+    paymentMethod: 'Transfer Bank',
+    paymentStatus: 'Lunas',
+    deliveryStatus: 'Selesai',
+    invoiceNumber: 'INV/2024/004'
+  }
 ];
 
 const mockMonthlyStats = [
