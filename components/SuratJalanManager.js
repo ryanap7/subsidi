@@ -267,10 +267,16 @@ export default function SuratJalanManager({ onTrackDelivery }) {
         .filter(dest => dest.spbe)
         .map(dest => mockSPBEDestinations.find(s => s.id === dest.spbe)?.name?.split(' ')[1] || '')
         .join(' → '),
-      notes: formData.generalNotes
+      notes: formData.generalNotes,
+      trackingData: {
+        currentLocation: { lat: -6.2088, lng: 106.8456 },
+        route: [],
+        routePath: []
+      }
     };
 
     setSuratJalanList([newSJ, ...suratJalanList]);
+    setCurrentPage(1); // Go back to first page to see the new item
     setFormData({
       driver: '',
       vehicle: '',
