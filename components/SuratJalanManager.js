@@ -200,6 +200,8 @@ export default function SuratJalanManager({ onTrackDelivery }) {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedSJ, setSelectedSJ] = useState(null);
   const [suratJalanList, setSuratJalanList] = useState(mockSuratJalan);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5); // Show 5 cards per page
   const [formData, setFormData] = useState({
     driver: '',
     vehicle: '',
@@ -207,6 +209,24 @@ export default function SuratJalanManager({ onTrackDelivery }) {
     destinations: [{ spbe: '', volume: '', notes: '' }],
     generalNotes: ''
   });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(suratJalanList.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = suratJalanList.slice(startIndex, endIndex);
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
+  };
+
+  const goToPreviousPage = () => {
+    setCurrentPage(prev => Math.max(prev - 1, 1));
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage(prev => Math.min(prev + 1, totalPages));
+  };
 
   const addDestination = () => {
     setFormData({
