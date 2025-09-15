@@ -181,7 +181,7 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
 
       <div className="container mx-auto px-4 py-6">
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/90 backdrop-blur-lg shadow-lg border-0 h-14 p-1">
+          <TabsList className="grid w-full grid-cols-5 bg-white/90 backdrop-blur-lg shadow-lg border-0 h-14 p-1">
             <TabsTrigger 
               value="overview" 
               className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 rounded-lg h-full flex items-center justify-center space-x-2"
@@ -195,6 +195,13 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
             >
               <Package className="w-4 h-4" />
               <span>Manajemen Rantai Pasok</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="spbe-management" 
+              className="text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 rounded-lg h-full flex items-center justify-center space-x-2"
+            >
+              <Building2 className="w-4 h-4" />
+              <span>Management SPBE</span>
             </TabsTrigger>
             <TabsTrigger 
               value="logistics" 
