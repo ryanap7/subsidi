@@ -10,7 +10,7 @@ import {
   MapPin, Truck, CheckCircle2, Clock, Route, 
   Navigation, Target, Package, AlertCircle
 } from 'lucide-react';
-import { GoogleMap, LoadScript, Marker, Polyline, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, Marker, Polyline, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
 
 const mapContainerStyle = {
   width: '100%',
