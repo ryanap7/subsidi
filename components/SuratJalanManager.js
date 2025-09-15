@@ -307,6 +307,13 @@ export default function SuratJalanManager({ onTrackDelivery }) {
   const handleTrackDelivery = (sj) => {
     if (onTrackDelivery) {
       onTrackDelivery(sj.trackingData);
+      // Auto-focus to the map section
+      setTimeout(() => {
+        const mapElement = document.querySelector('[data-testid="logistics-tracking-map"]');
+        if (mapElement) {
+          mapElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
     }
   };
 
