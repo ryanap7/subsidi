@@ -506,6 +506,161 @@ export default function SPBEDetail({ spbe, onBack }) {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Monthly Statistics with Charts */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Volume Trend Chart */}
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-gray-900 flex items-center">
+                    <BarChart3 className="w-5 h-5 mr-2" />
+                    Tren Volume Bulanan
+                  </CardTitle>
+                  <CardDescription>Volume penjualan dalam 4 bulan terakhir</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {mockMonthlyStats.map((stat, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium text-gray-700">{stat.month}</span>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm font-bold text-gray-900">{stat.volume.toLocaleString()} L</span>
+                            <div className="flex items-center space-x-1">
+                              {stat.growth > 0 ? (
+                                <TrendingUp className="w-3 h-3 text-green-500" />
+                              ) : (
+                                <TrendingDown className="w-3 h-3 text-red-500" />
+                              )}
+                              <span className={`text-xs font-medium ${stat.growth > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {stat.growth > 0 ? '+' : ''}{stat.growth}%
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-3">
+                          <div 
+                            className={`h-3 rounded-full transition-all duration-500 ${
+                              stat.growth > 0 ? 'bg-gradient-to-r from-green-400 to-emerald-500' : 
+                              stat.growth < 0 ? 'bg-gradient-to-r from-red-400 to-pink-500' : 
+                              'bg-gradient-to-r from-blue-400 to-indigo-500'
+                            }`}
+                            style={{ width: `${(stat.volume / 60000) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Revenue Trend Chart */}
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-gray-900 flex items-center">
+                    <DollarSign className="w-5 h-5 mr-2" />
+                    Tren Pendapatan Bulanan
+                  </CardTitle>
+                  <CardDescription>Pendapatan dalam 4 bulan terakhir</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {mockMonthlyStats.map((stat, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium text-gray-700">{stat.month}</span>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm font-bold text-green-700">Rp {(stat.revenue / 1000000).toFixed(1)}M</span>
+                            <div className="flex items-center space-x-1">
+                              {stat.growth > 0 ? (
+                                <TrendingUp className="w-3 h-3 text-green-500" />
+                              ) : (
+                                <TrendingDown className="w-3 h-3 text-red-500" />
+                              )}
+                              <span className={`text-xs font-medium ${stat.growth > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {stat.growth > 0 ? '+' : ''}{stat.growth}%
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-3">
+                          <div 
+                            className={`h-3 rounded-full transition-all duration-500 ${
+                              stat.growth > 0 ? 'bg-gradient-to-r from-emerald-400 to-green-500' : 
+                              stat.growth < 0 ? 'bg-gradient-to-r from-orange-400 to-red-500' : 
+                              'bg-gradient-to-r from-blue-400 to-purple-500'
+                            }`}
+                            style={{ width: `${(stat.revenue / 1500000000) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Performance Summary Chart */}
+            <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-gray-900 flex items-center">
+                  <Activity className="w-5 h-5 mr-2" />
+                  Ringkasan Performa 4 Bulan Terakhir
+                </CardTitle>
+                <CardDescription>Analisis komprehensif volume, pendapatan, dan pertumbuhan</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Total Volume */}
+                  <div className="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-100">
+                    <div className="mb-4">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+                        <Package className="w-8 h-8 text-white" />
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      {mockMonthlyStats.reduce((sum, stat) => sum + stat.volume, 0).toLocaleString()} L
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-3">Total Volume</p>
+                    <div className="text-xs text-blue-600 font-medium">
+                      Rata-rata: {(mockMonthlyStats.reduce((sum, stat) => sum + stat.volume, 0) / mockMonthlyStats.length).toLocaleString()} L/bulan
+                    </div>
+                  </div>
+
+                  {/* Total Revenue */}
+                  <div className="text-center p-6 rounded-xl bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border border-green-100">
+                    <div className="mb-4">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
+                        <DollarSign className="w-8 h-8 text-white" />
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      Rp {(mockMonthlyStats.reduce((sum, stat) => sum + stat.revenue, 0) / 1000000000).toFixed(1)}M
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-3">Total Pendapatan</p>
+                    <div className="text-xs text-green-600 font-medium">
+                      Rata-rata: Rp {(mockMonthlyStats.reduce((sum, stat) => sum + stat.revenue, 0) / mockMonthlyStats.length / 1000000).toFixed(1)}M/bulan
+                    </div>
+                  </div>
+
+                  {/* Average Growth */}
+                  <div className="text-center p-6 rounded-xl bg-gradient-to-br from-orange-50 via-yellow-50 to-amber-50 border border-orange-100">
+                    <div className="mb-4">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-orange-500 to-yellow-600 flex items-center justify-center shadow-lg">
+                        <TrendingUp className="w-8 h-8 text-white" />
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      +{(mockMonthlyStats.reduce((sum, stat) => sum + Math.abs(stat.growth), 0) / mockMonthlyStats.length).toFixed(1)}%
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-3">Rata-rata Pertumbuhan</p>
+                    <div className="text-xs text-orange-600 font-medium">
+                      Tren positif dalam 4 bulan
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
