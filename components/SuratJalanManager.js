@@ -510,225 +510,123 @@ export default function SuratJalanManager({ onTrackDelivery }) {
         </Dialog>
       </div>
 
-      {/* Surat Jalan List */}
-      <div className="space-y-8">
+      {/* Surat Jalan List - Clean Simple Design Focused on Content */}
+      <div className="space-y-4">
         {currentItems.map((sj) => {
           const statusBadge = getStatusBadge(sj.status);
           return (
             <motion.div
               key={sj.id}
-              whileHover={{ y: -8, scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="cursor-pointer group"
+              whileHover={{ scale: 1.01 }}
+              className="cursor-pointer"
             >
-              <Card className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50/50 to-indigo-50/30 backdrop-blur-xl border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 rounded-3xl">
-                {/* Animated gradient border */}
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-blue-500 to-emerald-500 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="absolute inset-[1px] bg-gradient-to-br from-white via-blue-50/50 to-indigo-50/30 rounded-3xl"></div>
-                
-                {/* Top accent bar */}
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-violet-500 via-blue-500 to-emerald-500 rounded-t-3xl"></div>
-                
-                <CardContent className="relative p-8">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                    
-                    {/* Left Section - Hero Document Info */}
-                    <div className="lg:col-span-4 space-y-6">
-                      <div className="flex items-start space-x-5">
-                        <div className="relative group/icon">
-                          <div className="absolute -inset-2 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-3xl blur-xl opacity-60 group-hover/icon:opacity-100 transition-opacity duration-300"></div>
-                          <div className="relative p-4 rounded-3xl bg-gradient-to-br from-emerald-500 via-blue-500 to-indigo-600 shadow-2xl">
-                            <FileText className="w-8 h-8 text-white" />
-                          </div>
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="p-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 shadow-lg">
+                        <FileText className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900">{sj.number}</h3>
+                        <p className="text-sm text-gray-600 flex items-center">
+                          <Calendar className="w-4 h-4 mr-2" />
+                          {new Date(sj.date).toLocaleDateString('id-ID', { 
+                            weekday: 'long', 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                    <Badge 
+                      variant={statusBadge.variant} 
+                      className={`${statusBadge.color} text-white px-3 py-1 text-sm font-medium shadow-sm`}
+                    >
+                      {statusBadge.text}
+                    </Badge>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                    {/* Driver & Vehicle */}
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Pengemudi & Kendaraan</h4>
+                      <div className="space-y-2">
+                        <div className="flex items-center text-gray-900">
+                          <User className="w-4 h-4 mr-2 text-blue-500" />
+                          <span className="font-medium">{sj.driver}</span>
                         </div>
-                        <div className="flex-1 space-y-3">
-                          <div>
-                            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent tracking-tight leading-tight">
-                              {sj.number}
-                            </CardTitle>
-                            <CardDescription className="text-gray-600 flex items-center text-base mt-2 font-medium">
-                              <Calendar className="w-5 h-5 mr-3 text-blue-500" />
-                              {new Date(sj.date).toLocaleDateString('id-ID', { 
-                                weekday: 'long', 
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric' 
-                              })}
-                            </CardDescription>
-                          </div>
-                          
-                          <div className="relative inline-block">
-                            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-2xl blur opacity-50"></div>
-                            <Badge 
-                              variant={statusBadge.variant} 
-                              className={`relative ${statusBadge.color} text-white px-6 py-3 text-base font-bold shadow-2xl rounded-2xl border-0 tracking-wide`}
-                            >
-                              {statusBadge.text}
-                            </Badge>
-                          </div>
+                        <div className="flex items-center text-gray-900">
+                          <Truck className="w-4 h-4 mr-2 text-purple-500" />
+                          <span className="font-medium">{sj.vehicle}</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Driver & Vehicle Section - Enhanced Cards */}
-                    <div className="lg:col-span-2 space-y-4">
-                      <h4 className="text-sm font-bold text-gray-800 uppercase tracking-widest border-b-2 border-gradient-to-r from-blue-500 to-emerald-500 pb-2">
-                        Tim & Kendaraan
-                      </h4>
-                      <div className="space-y-4">
-                        <motion.div 
-                          whileHover={{ scale: 1.05, x: 4 }}
-                          className="flex items-center p-4 rounded-2xl bg-gradient-to-r from-blue-50/80 via-white to-indigo-50/80 border border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300"
-                        >
-                          <div className="relative mr-4">
-                            <div className="absolute inset-0 bg-blue-400 rounded-2xl blur opacity-30"></div>
-                            <div className="relative p-3 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg">
-                              <User className="w-5 h-5 text-white" />
-                            </div>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-500 uppercase tracking-wide">Pengemudi</p>
-                            <p className="font-bold text-gray-900 text-lg">{sj.driver}</p>
-                          </div>
-                        </motion.div>
-                        
-                        <motion.div 
-                          whileHover={{ scale: 1.05, x: 4 }}
-                          className="flex items-center p-4 rounded-2xl bg-gradient-to-r from-purple-50/80 via-white to-pink-50/80 border border-purple-200/50 shadow-lg hover:shadow-xl transition-all duration-300"
-                        >
-                          <div className="relative mr-4">
-                            <div className="absolute inset-0 bg-purple-400 rounded-2xl blur opacity-30"></div>
-                            <div className="relative p-3 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 shadow-lg">
-                              <Truck className="w-5 h-5 text-white" />
-                            </div>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-500 uppercase tracking-wide">Kendaraan</p>
-                            <p className="font-bold text-gray-900 text-lg">{sj.vehicle}</p>
-                          </div>
-                        </motion.div>
+                    {/* Route & Volume */}
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Rute & Volume</h4>
+                      <div className="space-y-2">
+                        <div className="flex items-center text-gray-900">
+                          <Route className="w-4 h-4 mr-2 text-green-500" />
+                          <span className="font-medium">{sj.route}</span>
+                        </div>
+                        <div className="flex items-center text-gray-900">
+                          <Package className="w-4 h-4 mr-2 text-orange-500" />
+                          <span className="font-bold">{sj.totalVolume.toLocaleString()} L</span>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Route & Volume Section - Stunning Layout */}
-                    <div className="lg:col-span-3 space-y-4">
-                      <h4 className="text-sm font-bold text-gray-800 uppercase tracking-widest border-b-2 border-gradient-to-r from-emerald-500 to-green-500 pb-2">
-                        Detail Pengiriman
-                      </h4>
-                      <div className="space-y-4">
-                        <motion.div 
-                          whileHover={{ scale: 1.03 }}
-                          className="p-5 rounded-2xl bg-gradient-to-br from-emerald-50/80 via-white to-green-50/80 border border-emerald-200/50 shadow-lg hover:shadow-xl transition-all duration-300"
-                        >
-                          <div className="flex items-center space-x-4 mb-3">
-                            <div className="relative">
-                              <div className="absolute inset-0 bg-emerald-400 rounded-xl blur opacity-30"></div>
-                              <div className="relative p-2 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600">
-                                <Route className="w-4 h-4 text-white" />
-                              </div>
-                            </div>
-                            <div>
-                              <p className="text-xs text-gray-500 uppercase tracking-wide">Rute</p>
-                              <p className="font-bold text-gray-900">{sj.route}</p>
-                            </div>
-                          </div>
-                        </motion.div>
-                        
-                        <motion.div 
-                          whileHover={{ scale: 1.03 }}
-                          className="p-5 rounded-2xl bg-gradient-to-br from-orange-50/80 via-white to-red-50/80 border border-orange-200/50 shadow-lg hover:shadow-xl transition-all duration-300"
-                        >
-                          <div className="flex items-center space-x-4">
-                            <div className="relative">
-                              <div className="absolute inset-0 bg-orange-400 rounded-xl blur opacity-30"></div>
-                              <div className="relative p-2 rounded-xl bg-gradient-to-br from-orange-500 to-red-600">
-                                <Package className="w-4 h-4 text-white" />
-                              </div>
-                            </div>
-                            <div>
-                              <p className="text-xs text-gray-500 uppercase tracking-wide">Total Volume</p>
-                              <p className="text-3xl font-black bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                                {sj.totalVolume.toLocaleString()}
-                              </p>
-                              <p className="text-lg font-bold text-gray-600">Liter</p>
-                            </div>
-                          </div>
-                        </motion.div>
-                      </div>
-                    </div>
-
-                    {/* Destinations Section - Modern List */}
-                    <div className="lg:col-span-2 space-y-4">
-                      <h4 className="text-sm font-bold text-gray-800 uppercase tracking-widest border-b-2 border-gradient-to-r from-blue-500 to-indigo-500 pb-2">
-                        Destinasi ({sj.destinations.length})
-                      </h4>
-                      <div className="space-y-3 max-h-40 overflow-y-auto custom-scrollbar">
+                    {/* Destinations */}
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Destinasi ({sj.destinations.length})</h4>
+                      <div className="space-y-2 max-h-20 overflow-y-auto">
                         {sj.destinations.map((dest, index) => (
-                          <motion.div
-                            key={index}
-                            whileHover={{ scale: 1.02, x: 4 }}
-                            className="p-4 rounded-2xl bg-gradient-to-r from-white/90 via-blue-50/70 to-indigo-50/60 border border-blue-200/40 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm"
-                          >
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center flex-1 space-x-3">
-                                <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg animate-pulse"></div>
-                                <div className="flex-1">
-                                  <p className="text-sm font-bold text-gray-900 truncate">{dest.spbe}</p>
-                                  <p className="text-xs text-gray-600 font-medium">{dest.volume.toLocaleString()}L</p>
-                                </div>
-                              </div>
-                              <div className="ml-3">
-                                {dest.delivered ? (
-                                  <div className="p-2 rounded-full bg-green-100">
-                                    <CheckCircle2 className="w-5 h-5 text-green-600" />
-                                  </div>
-                                ) : (
-                                  <div className="p-2 rounded-full bg-amber-100">
-                                    <Clock className="w-5 h-5 text-amber-600" />
-                                  </div>
-                                )}
-                              </div>
+                          <div key={index} className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border border-gray-200">
+                            <div className="flex items-center flex-1">
+                              <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                              <span className="text-sm font-medium text-gray-900 truncate">{dest.spbe}</span>
                             </div>
-                          </motion.div>
+                            <div className="flex items-center space-x-2 ml-2">
+                              <span className="text-xs font-bold text-gray-700">{dest.volume.toLocaleString()}L</span>
+                              {dest.delivered ? (
+                                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                              ) : (
+                                <Clock className="w-4 h-4 text-amber-500" />
+                              )}
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>
+                  </div>
 
-                    {/* Actions Section - Premium Buttons */}
-                    <div className="lg:col-span-1 flex flex-col space-y-4">
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Button 
-                          className="w-full relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-800 text-white shadow-2xl hover:shadow-3xl transition-all duration-300 py-4 font-bold text-base rounded-2xl border-0"
-                          onClick={() => handleTrackDelivery(sj)}
-                        >
-                          <div className="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                          <Navigation className="w-5 h-5 mx-auto relative z-10" />
-                          <span className="relative z-10 block mt-1 text-xs">Lacak</span>
-                        </Button>
-                      </motion.div>
-                      
-                      <div className="grid grid-cols-1 gap-3">
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                          <Button 
-                            variant="outline"
-                            className="w-full bg-white/80 text-gray-700 border-2 border-blue-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-400 hover:text-blue-700 transition-all duration-300 py-3 font-bold rounded-xl shadow-lg hover:shadow-xl"
-                            onClick={() => setSelectedSJ(sj)}
-                          >
-                            <Eye className="w-4 h-4 mx-auto" />
-                            <span className="block text-xs mt-1">Detail</span>
-                          </Button>
-                        </motion.div>
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                          <Button 
-                            variant="outline"
-                            className="w-full bg-white/80 text-gray-700 border-2 border-green-200 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:border-green-400 hover:text-green-700 transition-all duration-300 py-3 font-bold rounded-xl shadow-lg hover:shadow-xl"
-                          >
-                            <Download className="w-4 h-4 mx-auto" />
-                            <span className="block text-xs mt-1">PDF</span>
-                          </Button>
-                        </motion.div>
-                      </div>
-                    </div>
+                  {/* Actions */}
+                  <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                    <Button 
+                      className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                      onClick={() => handleTrackDelivery(sj)}
+                    >
+                      <Navigation className="w-4 h-4 mr-2" />
+                      Lacak Pengiriman
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      className="text-gray-700 border-gray-300 hover:bg-gray-50 transform hover:scale-105 transition-all duration-200"
+                      onClick={() => setSelectedSJ(sj)}
+                    >
+                      <Eye className="w-4 h-4 mr-2" />
+                      Detail
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      className="text-gray-700 border-gray-300 hover:bg-gray-50 transform hover:scale-105 transition-all duration-200"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      PDF
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
