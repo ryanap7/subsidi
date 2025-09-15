@@ -19,6 +19,7 @@ import GoogleMapComponent from './GoogleMapComponent';
 import SupplyChainMetrics from './SupplyChainMetrics';
 import SuratJalanManager from './SuratJalanManager';
 import LogisticsTrackingMap from './LogisticsTrackingMap';
+import SPBEDetail from './SPBEDetail';
 
 // Mock data untuk dashboard
 const mockSPBEData = [
