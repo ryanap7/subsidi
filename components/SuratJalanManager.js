@@ -624,8 +624,7 @@ export default function SuratJalanManager({ onTrackDelivery }) {
                       variant="outline"
                       className="text-gray-700 border-gray-300 hover:bg-gray-50 transform hover:scale-105 transition-all duration-200"
                     >
-                      <Download className="w-4 h-4 mr-2" />
-                      PDF
+                      <Download className="w-4 h-4" />
                     </Button>
                   </div>
                 </CardContent>
