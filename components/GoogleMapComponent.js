@@ -145,7 +145,6 @@ export default function GoogleMapComponent({ spbeData = [], vehicles = [], view 
   return (
     <div className="w-full h-full relative">
       {isLoaded ? (
-      {isLoaded ? (
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={defaultCenter}
