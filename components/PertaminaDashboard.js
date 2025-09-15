@@ -546,54 +546,82 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
               </Card>
             </motion.div>
 
-            {/* SPBE Status Grid - Fixed card heights */}
+            {/* SPBE Status Cards - Enhanced with more data */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
             >
               <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-gray-900 flex items-center text-xl">
-                    <Building2 className="w-6 h-6 mr-3" />
-                    Monitoring Status SPBE Real-time
-                  </CardTitle>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-gray-900 flex items-center text-xl">
+                      <Building2 className="w-6 h-6 mr-3" />
+                      Status SPBE Nasional
+                    </CardTitle>
+                    <div className="flex items-center space-x-2">
+                      <Badge className="bg-green-500 text-white">
+                        {enhancedSPBEData.filter(spbe => spbe.status === 'normal').length} Normal
+                      </Badge>
+                      <Badge className="bg-yellow-500 text-white">
+                        {enhancedSPBEData.filter(spbe => spbe.status === 'low').length} Rendah
+                      </Badge>
+                      <Badge className="bg-red-500 text-white">
+                        {enhancedSPBEData.filter(spbe => spbe.status === 'critical').length} Kritis
+                      </Badge>
+                    </div>
+                  </div>
                   <CardDescription className="text-gray-600">
-                    Pemantauan komprehensif tingkat stok dan status operasional seluruh SPBE
+                    Monitoring real-time {enhancedSPBEData.length} SPBE di seluruh Indonesia
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {mockSPBEData.map((spbe) => (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-h-80 overflow-y-auto">
+                    {enhancedSPBEData.map((spbe) => (
                       <motion.div
                         key={spbe.id}
                         whileHover={{ scale: 1.02 }}
-                        className="p-6 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-lg h-48 flex flex-col justify-between"
+                        className="cursor-pointer"
                         onClick={() => handleSPBECardClick(spbe)}
                       >
-                        <div className="flex justify-between items-start mb-4">
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 text-lg line-clamp-2">{spbe.name}</h3>
-                            <p className="text-sm text-gray-600 mt-1">{spbe.location}</p>
-                          </div>
-                          <Badge variant={
-                            spbe.status === 'critical' ? 'destructive' :
-                            spbe.status === 'low' ? 'secondary' : 'default'
-                          } className="shadow-sm ml-2 flex-shrink-0">
-                            {spbe.status === 'critical' ? 'Kritis' : spbe.status === 'low' ? 'Rendah' : 'Normal'}
-                          </Badge>
-                        </div>
-                        <div className="space-y-3 flex-1">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Stok Tersedia</span>
-                            <span className="font-medium text-gray-900">{spbe.stock.toLocaleString()}L</span>
-                          </div>
-                          <Progress value={(spbe.stock / spbe.capacity) * 100} className="h-3" />
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Kapasitas Total</span>
-                            <span className="font-medium text-gray-900">{spbe.capacity.toLocaleString()}L</span>
-                          </div>
-                        </div>
+                        <Card className={`transition-all duration-300 hover:shadow-lg ${
+                          spbe.status === 'critical' ? 'border-l-4 border-red-500 bg-red-50/50' :
+                          spbe.status === 'low' ? 'border-l-4 border-yellow-500 bg-yellow-50/50' :
+                          'border-l-4 border-green-500 bg-green-50/50'
+                        }`}>
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <h3 className="font-semibold text-sm text-gray-900 line-clamp-1">{spbe.name}</h3>
+                              <Badge 
+                                variant={spbe.status === 'critical' ? 'destructive' : spbe.status === 'low' ? 'secondary' : 'default'}
+                                className="text-xs"
+                              >
+                                {spbe.status === 'critical' ? 'Kritis' : spbe.status === 'low' ? 'Rendah' : 'Normal'}
+                              </Badge>
+                            </div>
+                            <div className="space-y-2">
+                              <div className="flex justify-between text-xs">
+                                <span className="text-gray-600">Stok:</span>
+                                <span className="font-medium">{spbe.stock.toLocaleString()}L</span>
+                              </div>
+                              <div className="flex justify-between text-xs">
+                                <span className="text-gray-600">Kapasitas:</span>
+                                <span className="font-medium">{spbe.capacity.toLocaleString()}L</span>
+                              </div>
+                              <div className="flex justify-between text-xs">
+                                <span className="text-gray-600">Throughput:</span>
+                                <span className="font-medium">{spbe.dailyThroughput?.toLocaleString() || '0'}L/hari</span>
+                              </div>
+                              <Progress 
+                                value={(spbe.stock / spbe.capacity) * 100} 
+                                className="h-2" 
+                              />
+                              <div className="flex justify-between text-xs text-gray-500">
+                                <span>{spbe.region}</span>
+                                <span>{((spbe.stock / spbe.capacity) * 100).toFixed(1)}%</span>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
                       </motion.div>
                     ))}
                   </div>
