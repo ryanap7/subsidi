@@ -331,13 +331,12 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
           <TabsContent value="supply-chain" className="space-y-6">
             <SupplyChainMetrics />
             
-            {/* Logistics Management - Fixed card heights */}
+            {/* Logistics Management */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-6"
             >
-              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg h-96">
+              <Card className="bg-white/80 backdrop-blur-lg border-0 shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-gray-900 flex items-center text-xl">
                     <Truck className="w-6 h-6 mr-3" />
@@ -347,9 +346,9 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                     Pemantauan real-time seluruh aktivitas distribusi
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4 h-64 overflow-y-auto">
+                <CardContent className="space-y-4">
                   {mockDeliveries.map((delivery) => (
-                    <div key={delivery.id} className="p-4 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transition-all duration-300 min-h-20">
+                    <div key={delivery.id} className="p-4 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-300 transition-all duration-300">
                       <div className="flex justify-between items-start mb-3">
                         <div className="flex-1">
                           <h4 className="text-sm font-medium text-gray-900 line-clamp-1">{delivery.route}</h4>
