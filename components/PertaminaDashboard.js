@@ -71,6 +71,10 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
     setShowSPBEDetail(true);
   };
 
+  const handleTrackDelivery = (tracking) => {
+    setTrackingData(tracking);
+  };
+
   const stats = getTotalStats();
 
   return (
