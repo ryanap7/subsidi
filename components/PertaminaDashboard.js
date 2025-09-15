@@ -22,6 +22,26 @@ import LogisticsTrackingMap from './LogisticsTrackingMap';
 import SPBEDetail from './SPBEDetail';
 import SPBEManagement from './SPBEManagement';
 
+// Enhanced mock data with more statistics
+const enhancedStats = {
+  totalSPBE: 125,
+  activeSPBE: 124,
+  totalCapacity: 2500000, // 2.5M liters
+  totalStock: 1875000, // 1.875M liters
+  dailySales: 185000, // 185K liters today
+  monthlyRevenue: 4750000000, // 4.75B rupiah this month
+  activeVehicles: 89,
+  deliveriesCompleted: 342,
+  pendingDeliveries: 28,
+  averageUtilization: 75,
+  criticalSPBE: 3,
+  maintenanceSPBE: 1,
+  topPerformingSPBE: 'SPBE Jakarta Selatan',
+  efficiency: 94.2,
+  fuelQuality: 99.8,
+  customerSatisfaction: 96.5
+};
+
 // Mock data untuk dashboard
 const mockSPBEData = [
   { id: 'SPBE-001', name: 'SPBE Jakarta Selatan', location: 'Jakarta', stock: 15000, capacity: 20000, status: 'normal', lat: -6.2615, lng: 106.7815 },
