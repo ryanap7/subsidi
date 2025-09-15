@@ -129,13 +129,18 @@ export default function SPBEManagement({ onViewDetail }) {
   const [itemsPerPage] = useState(8);
   const [formData, setFormData] = useState({
     name: '',
+    companyName: '',
     location: '',
     address: '',
     capacity: '',
     manager: '',
     phone: '',
     lat: '',
-    lng: ''
+    lng: '',
+    businessLicense: '',
+    permits: '',
+    cooperationStart: '',
+    cooperationEnd: ''
   });
 
   // Filter and search logic
