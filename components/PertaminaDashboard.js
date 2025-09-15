@@ -17,7 +17,6 @@ import {
 } from 'lucide-react';
 import GoogleMapComponent from './GoogleMapComponent';
 import SupplyChainMetrics from './SupplyChainMetrics';
-import AlertSystem from './AlertSystem';
 import SuratJalanManager from './SuratJalanManager';
 import LogisticsTrackingMap from './LogisticsTrackingMap';
 
