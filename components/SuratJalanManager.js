@@ -803,24 +803,12 @@ export default function SuratJalanManager({ onTrackDelivery }) {
               
               {selectedSJ.notes && (
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">Catatan</p>
-                  <p className="text-gray-900 p-3 bg-gray-50 rounded-lg">{selectedSJ.notes}</p>
+                  <p className="text-sm text-gray-600 mb-2">Catatan Umum</p>
+                  <div className="p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl border border-gray-200">
+                    <p className="text-gray-900">{selectedSJ.notes}</p>
+                  </div>
                 </div>
               )}
-              
-              <div className="flex space-x-3 pt-4 border-t">
-                <Button 
-                  className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
-                  onClick={() => handleTrackDelivery(selectedSJ)}
-                >
-                  <Navigation className="w-4 h-4 mr-2" />
-                  Lacak Pengiriman
-                </Button>
-                <Button className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-                  <Download className="w-4 h-4 mr-2" />
-                  Unduh PDF
-                </Button>
-              </div>
             </div>
           )}
         </DialogContent>
