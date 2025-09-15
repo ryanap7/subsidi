@@ -376,10 +376,6 @@ export default function PertaminaDashboard({ userRole, onLogout }) {
                   ))}
                 </CardContent>
               </Card>
-
-              <div className="h-96">
-                <AlertSystem />
-              </div>
             </motion.div>
           </TabsContent>
 
