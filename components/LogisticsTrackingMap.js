@@ -106,35 +106,34 @@ export default function LogisticsTrackingMap() {
   const [selectedMarker, setSelectedMarker] = useState(null);
 
   const getStationIcon = (station) => {
+    const baseIcon = {
+      scale: 10,
+      fillOpacity: 1,
+      strokeColor: '#ffffff',
+      strokeWeight: 3,
+    };
+
     if (station.type === 'depot') {
       return {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 10,
+        ...baseIcon,
+        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
         fillColor: station.status === 'completed' ? '#10b981' : '#6b7280',
-        fillOpacity: 1,
-        strokeColor: '#ffffff',
-        strokeWeight: 3,
       };
     } else if (station.type === 'destination') {
       return {
-        path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+        ...baseIcon,
         scale: 12,
+        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
         fillColor: station.status === 'completed' ? '#10b981' : 
                    station.status === 'in-progress' ? '#3b82f6' : '#6b7280',
-        fillOpacity: 1,
-        strokeColor: '#ffffff',
-        strokeWeight: 3,
-        rotation: 0,
       };
     } else {
       return {
-        path: google.maps.SymbolPath.CIRCLE,
+        ...baseIcon,
         scale: 8,
+        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
         fillColor: station.status === 'completed' ? '#10b981' : 
                    station.status === 'in-progress' ? '#3b82f6' : '#6b7280',
-        fillOpacity: 1,
-        strokeColor: '#ffffff',
-        strokeWeight: 2,
       };
     }
   };
